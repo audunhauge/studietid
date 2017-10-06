@@ -1,0 +1,39 @@
+:root {
+    --bakgrunn1: white;
+    --bakgrunn2: cornsilk;
+    --bakgrunn3: seashell;
+    --formBg: rgba(170, 189, 170, 0.24);
+  }
+
+#main {
+    background-color: var(--bakgrunn3);
+    width: 30em;
+    height: 30em;
+    position: relative;
+    margin: 1em;
+    border: solid 1px gray;
+    border-radius: 1em;
+    padding: 1em;
+}
+
+div.registrer label input[type=number] {
+  color:green;
+  font-size: 1.3em;
+  width: 9em;
+  text-align: center;
+}
+
+div.melding {
+  width: 80%;
+  height: 3em;
+  position: relative;
+  margin: 1em;
+  background-color: var(--bakgrunn2);
+  border: solid 1px gray;
+  border-radius: 1em;
+  padding: 1em;
+}
+
+.hidden {
+  display:none;
+}
