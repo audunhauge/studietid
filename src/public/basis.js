@@ -2,7 +2,7 @@
 
 function setup() {
     let inpKode:any = document.querySelector("div.registrer input");
-    let divMelding = document.querySelector("div.melding");
+    let divMelding:any = document.querySelector("div.melding");
     let lblMelding = divMelding.querySelector("label");
     
     inpKode.addEventListener("keyup", registrer);
