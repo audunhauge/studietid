@@ -26,6 +26,10 @@
 <body>
   <div id="main">
 
+    <div class="spinner">
+      <div></div>
+    </div>
+
     <div class="registrer hidden">
       <h4></h4>
       <label>
@@ -46,7 +50,19 @@
     </div>
 
     <div class="login hidden">
-      <button disabled class="signin" >Sign in with Google</button>
+      <button disabled class="signin">Sign in with Google</button>
+    </div>
+
+    <div class="signup hidden">
+      <h4>Oppgi engangskode</h4>
+      For å identifisere deg må du oppgi en enganskode som du får av kontaktlærer.
+      <label>
+          Skriv inn enganskoden: (10 tegn)
+          <p>
+            <input class="kode" type="text">
+          </p>
+        </label>
+      <button disabled class="signup">Bruk engangskoden</button>
     </div>
 
   </div>

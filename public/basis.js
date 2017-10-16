@@ -2,133 +2,165 @@
 
 function setup() {
   let divRegistrer = document.querySelector("div.registrer");
+  let divSignup = document.querySelector("div.signup");
+  let divSpinner = document.querySelector("div.spinner");
   let inpKode = divRegistrer.querySelector("input");
   let divMelding = document.querySelector("div.melding");
   let divLogin = document.querySelector("div.login");
   let lblMelding = divMelding.querySelector("label");
-  let btnSignup = divLogin.querySelector("button");
-  let displayName;
+  let btnLogin = divLogin.querySelector("button");
+  let btnSignup = divSignup.querySelector("button");
+  let inpOnetime = divSignup.querySelector("input");
+
+  let displayName; // name as known to id-provider
+  let userid; // google id (or facebook)
+  let uid; // internal id
+
+  let validOneTime = false; // used to check one time code
+
+  let database = firebase.database();
 
   inpKode.addEventListener("keyup", registrer);
 
   function registrer(e) {
     if (e.keyCode === 13) {
       let kode = inpKode.value;
-      divMelding.querySelector("h4").innerText = displayName;
+      divMelding.querySelector("h4").innerHTML = displayName;
       lblMelding.innerHTML = kode;
       divMelding.classList.remove("hidden");
       divRegistrer.classList.add("hidden");
     }
   }
 
-  /**
-   * Function called when clicking the Login/Logout button.
-   */
-  // [START buttoncallback]
   function toggleSignIn() {
     if (!firebase.auth().currentUser) {
-      // [START createprovider]
       var provider = new firebase.auth.GoogleAuthProvider();
-      // [END createprovider]
-      // [START addscopes]
-      provider.addScope('https://www.googleapis.com/auth/plus.login');
-      // [END addscopes]
-      // [START signin]
+      provider.addScope("https://www.googleapis.com/auth/plus.login");
       firebase.auth().signInWithRedirect(provider);
-      // [END signin]
     } else {
-      // [START signout]
       firebase.auth().signOut();
-      // [END signout]
     }
-    // [START_EXCLUDE]
-    btnSignup.disabled = true;
-    // [END_EXCLUDE]
+    btnLogin.disabled = true;
   }
-  // [END buttoncallback]
-  /**
-   * initApp handles setting up UI event listeners and registering Firebase auth listeners:
-   *  - firebase.auth().onAuthStateChanged: This listener is called when the user is signed in or
-   *    out, and that is where we update the UI.
-   *  - firebase.auth().getRedirectResult(): This promise completes when the user gets back from
-   *    the auth redirect flow. It is where you can get the OAuth access token from the IDP.
-   */
+
   function initApp() {
-    // Result from Redirect auth flow.
-    // [START getidptoken]
+    divRegistrer;
     firebase.auth().getRedirectResult().then(function (result) {
       if (result.credential) {
-        // This gives you a Google Access Token. You can use it to access the Google API.
         var token = result.credential.accessToken;
-        // [START_EXCLUDE]
-        //document.getElementById('quickstart-oauthtoken').textContent = token;
-      } else {}
-        //document.getElementById('quickstart-oauthtoken').textContent = 'null';
-        // [END_EXCLUDE]
-
-        // The signed-in user info.
+      }
       var user = result.user;
     }).catch(function (error) {
-      // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
-      // The email of the user's account used.
       var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
       var credential = error.credential;
-      // [START_EXCLUDE]
-      if (errorCode === 'auth/account-exists-with-different-credential') {
-        alert('You have already signed up with a different auth provider for that email.');
-        // If you are using multiple auth providers on your app you should handle linking
-        // the user's accounts here.
+      if (errorCode === "auth/account-exists-with-different-credential") {
+        alert("You have already signed up with a different auth provider for that email.");
       } else {
         console.error(error);
       }
-      // [END_EXCLUDE]
     });
-    // [END getidptoken]
-    // Listening for auth state changes.
-    // [START authstatelistener]
-    /*
-        let divRegistrer: any = document.querySelector("div.registrer");
-        let inpKode: any = divRegistrer.querySelector("input");
-        let divMelding: any = document.querySelector("div.melding");
-        let divLogin: any = document.querySelector("div.login");
-        let lblMelding = divMelding.querySelector("label");
-        let btnSignup = divLogin.querySelector("button");
+
+    /**
+     * Check if onetime already used
+     * if not used - connect userid (provider) with local id
+     * userid is available in enclosing scope (provider id)
+     * @param {int} id  - local uid
      */
+    function validateSignUp(id) {
+      // we fetch data for user given by uid
+      let ref = database.ref("userid/" + userid);
+      ref.once("value").then(function (snapshot) {
+        let aUserId = snapshot.val();
+        if (aUserId) {
+          // already used
+          inpOnetime.value += " invalid";
+        } else {
+          // register userid:uid 
+          // userid from provider, uid is local id
+          let ref = database.ref("userid/" + userid);
+          ref.set(id);
+          knownUser(id);
+        }
+      });
+    }
+
+    function signup(e) {
+      let otc = inpOnetime.value;
+      // onetime pwd converts to uid (local id, not provider-id)
+      let ref = database.ref("onetime/" + otc);
+      ref.once("value").then(function (snapshot) {
+        let uid = snapshot.val();
+        if (uid) {
+          // valid one time code
+          validateSignUp(uid);
+        } else {
+          inpOnetime.value += " invalid";
+        }
+      });
+    }
+
+    function validate(e) {
+      let otc = inpOnetime.value;
+      let n = parseInt(otc, 16);
+      let m = n.toString(16);
+      validOneTime = otc.length === 10 && m.length === 10;
+      btnSignup.disabled = !validOneTime;
+    }
+
+    function knownUser(id) {
+      divSignup.classList.add("hidden");
+      divRegistrer.classList.remove("hidden");
+      let ref = database.ref("stud/" + id);
+      ref.once("value").then(function (snapshot) {
+        let student = snapshot.val();
+        if (student) {
+          // valid one time code
+          let trueName = student.fn + " " + student.ln;
+          if (trueName.toLocaleLowerCase() !== displayName.toLocaleLowerCase()) {
+            displayName = trueName + "<br>AKA " + displayName;
+          }
+        } else {
+          displayName += " ikke validert";
+        }
+        divRegistrer.querySelector("h4").innerHTML = displayName;
+      });
+    }
+
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         // User is signed in.
-        divRegistrer.classList.remove("hidden");
-        displayName = user.displayName;
-        divRegistrer.querySelector("h4").innerText = displayName;
-        var email = user.email;
-        var emailVerified = user.emailVerified;
-        var photoURL = user.photoURL;
-        var isAnonymous = user.isAnonymous;
-        var uid = user.uid;
-        var providerData = user.providerData;
-        // [START_EXCLUDE]
-        //document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
-        //document.getElementById('quickstart-sign-in').textContent = 'Sign out';
-        //document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
-        // [END_EXCLUDE]
-      } else {}
-        // User is signed out.
-        // [START_EXCLUDE]
-        //document.getElementById('quickstart-sign-in-status').textContent = 'Signed out';
-        //document.getElementById('quickstart-sign-in').textContent = 'Sign in with Google';
-        //document.getElementById('quickstart-account-details').textContent = 'null';
-        //document.getElementById('quickstart-oauthtoken').textContent = 'null';
-        // [END_EXCLUDE]
+        let email = user.email;
+        let emailVerified = user.emailVerified;
+        let photoURL = user.photoURL;
+        let isAnonymous = user.isAnonymous;
+        let providerData = user.providerData;
 
-        // [START_EXCLUDE]
-      btnSignup.disabled = false;
-      // [END_EXCLUDE]
+        // created in enclosing scope
+        displayName = user.displayName;
+        userid = user.uid;
+
+        let ref = database.ref("userid/" + userid);
+        ref.once("value").then(function (snapshot) {
+          uid = snapshot.val();
+          divSpinner.classList.add("hidden");
+          if (uid) {
+            // this is a known user
+            knownUser(uid);
+          } else {
+            divSignup.classList.remove("hidden");
+            divRegistrer.classList.add("hidden");
+            btnSignup.addEventListener("click", signup);
+            inpOnetime.addEventListener("keyup", validate);
+          }
+        });
+      } else {
+        divLogin.classList.remove("hidden");
+      }
+      btnLogin.disabled = false;
     });
-    // [END authstatelistener]
-    btnSignup.addEventListener('click', toggleSignIn, false);
+    btnLogin.addEventListener("click", toggleSignIn, false);
   }
 
   initApp();

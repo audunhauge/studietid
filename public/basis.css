@@ -20,6 +20,21 @@
     flex-wrap: wrap;
 }
 
+div.spinner div {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  border: solid gray 5px;
+  border-bottom-color: transparent;
+  border-right-color: transparent;
+  animation: spinner 800ms linear infinite;
+}
+
+@keyframes spinner {
+  0% { transform: rotate(0deg); }
+  100% {transform: rotate(360deg); }
+}
+
 
 #main div h4 {
   color:blue;
