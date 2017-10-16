@@ -6,9 +6,11 @@
   <link rel="stylesheet" href="basis.css">
   <script src="basis.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Welcome to Firebase Hosting</title>
+  <title>Studietid</title>
+
 
   <!-- update the version number as needed -->
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
   <script defer src="/__/firebase/4.5.0/firebase-app.js"></script>
   <!-- include only the Firebase features as you need -->
   <script defer src="/__/firebase/4.5.0/firebase-auth.js"></script>
@@ -23,64 +25,38 @@
 
 <body>
   <div id="main">
-    <h4>Utkast til layout/design</h4>
-    <div class="registrer">
+
+    <div class="registrer hidden">
+      <h4></h4>
       <label>
         Skriv inn registreringskoden:
-        <br>
-        <input class="kode" type="number">
+        <p>
+          <input class="kode" type="number">
+        </p>
       </label>
     </div>
+
     <div class="melding hidden">
+      <h4></h4>
       Du er registrert på rom R110 av KNRA.
       <p>
         Du brukte koden
         <label></label>
       </p>
     </div>
+
+    <div class="login hidden">
+      <button disabled class="signin" >Sign in with Google</button>
+    </div>
+
   </div>
-  <p id="load">Firebase SDK Loading&hellip;</p>
+
+
+
+
 
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-      // // The Firebase SDK is initialized and available here!
-      //
-      // firebase.auth().onAuthStateChanged(user => { });
-      // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-      // firebase.messaging().requestPermission().then(() => { });
-      // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-      //
-      // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-
-      try {
-        let app = firebase.app();
-        let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
-        document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
-        let provider = new firebase.auth.GoogleAuthProvider();
-        firebase.auth().signInWithRedirect(provider);
-        firebase.auth().getRedirectResult().then(function (result) {
-          if (result.credential) {
-            // This gives you a Google Access Token. You can use it to access the Google API.
-            var token = result.credential.accessToken;
-            // ...
-          }
-          // The signed-in user info.
-          var user = result.user;
-        }).catch(function (error) {
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // The email of the user's account used.
-          var email = error.email;
-          // The firebase.auth.AuthCredential type that was used.
-          var credential = error.credential;
-          // ...
-        });
-      } catch (e) {
-        console.error(e);
-        document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
-      }
       setup();
     });
   </script>
