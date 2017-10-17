@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="basis.css">
+  <script src="util.js"></script>
   <script src="basis.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Studietid</title>
@@ -33,16 +34,14 @@
       <label>
         Skriv inn registreringskoden:
         <p>
-          <input class="kode" type="number">
+          <input class="kode" type="text">
         </p>
       </label>
     </div>
 
     <div class="melding hidden">
       <h4></h4>
-      Du er registrert på rom R110 av KNRA.
       <p>
-        Du brukte koden
         <label></label>
       </p>
     </div>
@@ -64,17 +63,30 @@
       <button disabled class="signup">Bruk engangskoden</button>
     </div>
 
+    <div class="header">
+      Studietid
+    </div>
+
   </div>
 
+  <p>
+    Skift utseende:
+    <div id="test">
+      <span data-t="aa">aa</span>
+      <span data-t="bb">bb</span>
+      <span data-t="cc">cc</span>
+      <span data-t="dd">dd</span>
+    </div>
 
 
 
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      setup();
-    });
-  </script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        setup();
+      });
+    </script>
 </body>
 
 </html>

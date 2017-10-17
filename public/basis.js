@@ -1,5 +1,3 @@
-
-
 function setup() {
   let divRegistrer = document.querySelector("div.registrer");
   let divSignup = document.querySelector("div.signup");
@@ -22,13 +20,57 @@ function setup() {
 
   inpKode.addEventListener("keyup", registrer);
 
+  /*******************
+   * TESTING LAYOUT CSS
+   */
+  //$FlowFixMe flow can't decide
+  document.getElementById("test").addEventListener("click", changeClass);
+
+  function changeClass(e) {
+    let target = e.target;
+    let klass = target.dataset.t;
+    document.getElementById("main").classList.remove(..."aa,bb,cc,dd".split(","));
+    document.getElementById("main").classList.add(klass);
+  }
+
+  /**
+   * END TESTING
+   */
+
   function registrer(e) {
+    let now = new Date();
+    let h = now.getHours();
+    let m = now.getMinutes();
+    let minutes = h * 60 + m;
     if (e.keyCode === 13) {
       let kode = inpKode.value;
-      divMelding.querySelector("h4").innerHTML = displayName;
-      lblMelding.innerHTML = kode;
-      divMelding.classList.remove("hidden");
-      divRegistrer.classList.add("hidden");
+      let ref = database.ref("regkeys/" + kode);
+      ref.once("value").then(function (snapshot) {
+        let regkey = snapshot.val();
+        if (regkey) {
+          // found a key
+          // must check count, start and duration
+          if (regkey.count < 1) {
+            inpKode.value += " oppbrukt";
+            return;
+          }
+          let [h, m] = regkey.start.split(":");
+          let keymin = 60 * +h + +m;
+          let dur = +regkey.duration;
+          if (keymin > minutes || keymin + dur < minutes) {
+            inpKode.value += " utløpt";
+            return;
+          }
+          let rom = regkey.room;
+          let teach = regkey.teach;
+          divMelding.querySelector("h4").innerHTML = displayName;
+          lblMelding.innerHTML = `Registrert på ${rom}<br>av ${teach}`;
+          divMelding.classList.remove("hidden");
+          divRegistrer.classList.add("hidden");
+        } else {
+          inpKode.value = inpKode.value.replace(/ invalid/g, '') + " invalid";
+        }
+      });
     }
   }
 
@@ -77,7 +119,7 @@ function setup() {
           // already used
           inpOnetime.value += " invalid";
         } else {
-          // register userid:uid 
+          // register userid:uid
           // userid from provider, uid is local id
           let ref = database.ref("userid/" + userid);
           ref.set(id);
@@ -117,7 +159,7 @@ function setup() {
         let student = snapshot.val();
         if (student) {
           // valid student
-          let trueName = student.fn + " " + student.ln;
+          let trueName = caps(student.fn) + " " + caps(student.ln);
           if (trueName.toLocaleLowerCase() !== displayName.toLocaleLowerCase()) {
             displayName = trueName + "<br>AKA " + displayName;
           }
