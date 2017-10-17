@@ -1,13 +1,12 @@
 
 
 function setup() {
-  let divRegistrer = document.querySelector("div.registrer");
+
   let divSignup = document.querySelector("div.signup");
   let divSpinner = document.querySelector("div.spinner");
-  let inpKode = divRegistrer.querySelector("input");
-  let divMelding = document.querySelector("div.melding");
+
   let divLogin = document.querySelector("div.login");
-  let lblMelding = divMelding.querySelector("label");
+
   let btnLogin = divLogin.querySelector("button");
   let btnSignup = divSignup.querySelector("button");
   let inpOnetime = divSignup.querySelector("input");
@@ -19,18 +18,6 @@ function setup() {
   let validOneTime = false; // used to check one time code
 
   let database = firebase.database();
-
-  inpKode.addEventListener("keyup", registrer);
-
-  function registrer(e) {
-    if (e.keyCode === 13) {
-      let kode = inpKode.value;
-      divMelding.querySelector("h4").innerHTML = displayName;
-      lblMelding.innerHTML = kode;
-      divMelding.classList.remove("hidden");
-      divRegistrer.classList.add("hidden");
-    }
-  }
 
   function toggleSignIn() {
     if (!firebase.auth().currentUser) {
@@ -44,7 +31,6 @@ function setup() {
   }
 
   function initApp() {
-    divRegistrer;
     firebase.auth().getRedirectResult().then(function (result) {
       if (result.credential) {
         var token = result.credential.accessToken;
@@ -111,12 +97,12 @@ function setup() {
 
     function knownUser(id) {
       divSignup.classList.add("hidden");
-      divRegistrer.classList.remove("hidden");
+
       let ref = database.ref("stud/" + id);
       ref.once("value").then(function (snapshot) {
         let student = snapshot.val();
         if (student) {
-          // valid student
+          // valid one time code
           let trueName = student.fn + " " + student.ln;
           if (trueName.toLocaleLowerCase() !== displayName.toLocaleLowerCase()) {
             displayName = trueName + "<br>AKA " + displayName;
@@ -124,7 +110,6 @@ function setup() {
         } else {
           displayName += " ikke validert";
         }
-        divRegistrer.querySelector("h4").innerHTML = displayName;
       });
     }
 
@@ -150,7 +135,7 @@ function setup() {
             knownUser(uid);
           } else {
             divSignup.classList.remove("hidden");
-            divRegistrer.classList.add("hidden");
+
             btnSignup.addEventListener("click", signup);
             inpOnetime.addEventListener("keyup", validate);
           }

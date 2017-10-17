@@ -128,7 +128,7 @@ function setup() {
       ref.once("value").then(function(snapshot) {
         let student = snapshot.val();
         if (student) {
-          // valid one time code
+          // valid student
           let trueName = student.fn + " " + student.ln;
           if (trueName.toLocaleLowerCase() !== displayName.toLocaleLowerCase() ) {
             displayName = trueName + "<br>AKA " + displayName;
@@ -168,6 +168,7 @@ function setup() {
           }
         });
       } else {
+        divSpinner.classList.add("hidden");
         divLogin.classList.remove("hidden");
       }
       btnLogin.disabled = false;
