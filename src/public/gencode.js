@@ -107,7 +107,7 @@ declare var firebase: {
         let otc = inpOnetime.value;
         let n = parseInt(otc, 16);
         let m = n.toString(16);
-        validOneTime = otc.length === 10 && m.length === 10;
+        validOneTime = otc.length === 12 && m.length === 12;
         btnSignup.disabled = !validOneTime;
       }
   

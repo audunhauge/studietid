@@ -1,6 +1,41 @@
 {
   "rules": {
-    ".read": "auth != null",
-    ".write": "auth != null"
+    "admin": {
+      ".read": "root.child('teachid').child(auth.uid).exists() === true"
+    },
+    "kontaktreg": {
+      ".read": "root.child('teachid').child(auth.uid).exists() === true"
+    },
+    "studreg": {
+      ".read": "root.child('teachid').child(auth.uid).exists() === true"
+    },
+    "userid": {
+      ".read": "root.child('teachid').child(auth.uid).exists() === true",
+      "$uid": {
+          ".read": "auth.uid === $uid",
+          ".write": "auth.uid === $uid"
+      }
+    },
+    "onetime": {
+        "$otp": {
+          ".read": "$otp !== 2"
+        }     
+    },   
+    "registrert": {
+       ".read": "root.child('teachid').child(auth.uid).exists() === true",     
+    },   
+    "regkeys": {
+       ".read": "root.child('teachid').child(auth.uid).exists() === true", 
+       "$key": {
+         ".read": "$key !== 2"
+       }
+    }, 
+     "stud": {
+      ".read": "root.child('teachid').child(auth.uid).exists() === true",
+      "$uid": {
+        ".read":"$uid !== 2"
+      }
+    }
+
   }
 }

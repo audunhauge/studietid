@@ -63,14 +63,14 @@ function setup() {
           // found a key
           // must check count, start and duration
           if (regkey.count < 1) {
-            inpKode.value += " oppbrukt";
+            inpKode.dataset.msg = "oppbrukt";
             return;
           }
           let [h, m] = regkey.start.split(":");
           let keymin = 60 * +h + +m;
           let dur = +regkey.duration;
           if (keymin > minutes || keymin + dur < minutes) {
-            inpKode.value += " utløpt";
+            inpKode.dataset.msg = "utløpt";
             return;
           }
           let rom = regkey.room;
@@ -80,7 +80,7 @@ function setup() {
           divMelding.classList.remove("hidden");
           divRegistrer.classList.add("hidden");
         } else {
-          inpKode.value = inpKode.value.replace(/ invalid/g,'') + " invalid";
+            inpKode.dataset.msg = "invalid";
         }
       });
     }

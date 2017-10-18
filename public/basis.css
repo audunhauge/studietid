@@ -42,9 +42,13 @@
   background-color: var(--bakgrunn4);
 }
 
+#main div {
+  text-align: center;
+}
+
 div.header {
   position: absolute;
-  height: 16%;
+  height: 12%;
   width: 100%;
   top:0;
   left:0;
@@ -82,12 +86,24 @@ div label {
   font-size: 1.3em;
 }
 
+#main div input {
+  text-align:center;
+  color:blue;
+}
 
-div.registrer label input[type=text] {
+
+div.registrer label input {
   color:green;
   font-size: 1.3em;
   width: 9em;
-  text-align: center;
+}
+
+div.registrer label input:after {
+  content: "hei";
+  position: absolute;
+  right: 1em;
+  top: -1.2em;
+  color: blue;
 }
 
 div.melding {
