@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="basis.css">
+    <script src="util.js"></script>
     <script src="gencode.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Generer kode</title>
@@ -33,7 +34,9 @@
             <label>
                 Velg rom:
                 <p>
-                    <input class="rom" type="text">
+                    <input class="rom" list="romliste">
+                    <datalist id="romliste">
+                    </datalist>
                 </p>
             </label>
         </div>
@@ -48,6 +51,16 @@
             </label>
         </div>
 
+        <div class="start hidden">
+                <h4></h4>
+                <label>
+                    Velg start-tid(hh:mm):
+                    <p>
+                        <input class="tid" type="time">
+                    </p>
+                </label>
+            </div>
+
         <div class="tidsfrist hidden">
             <h4></h4>
             <label>
@@ -60,7 +73,6 @@
 
         <div class="melding hidden">
             <h4></h4>
-            Registeringskode generert
             <p>
                 <label></label>
             </p>
@@ -85,6 +97,7 @@
             </label>
             <button disabled class="signup">Bruk engangskoden</button>
         </div>
+
         <div class="header">
             Studietid
         </div>

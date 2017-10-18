@@ -1,7 +1,9 @@
 function setup() {
-  let divRegistrer = document.querySelector("div.registrer");
+
   let divSignup = document.querySelector("div.signup");
+  let divRegistrer = document.querySelector("div.registrer");
   let divSpinner = document.querySelector("div.spinner");
+  let lblKode = divRegistrer.querySelector("label");
   let inpKode = divRegistrer.querySelector("input");
   let divMelding = document.querySelector("div.melding");
   let divLogin = document.querySelector("div.login");
@@ -42,6 +44,7 @@ function setup() {
     let h = now.getHours();
     let m = now.getMinutes();
     let minutes = h * 60 + m;
+    lblKode.dataset.msg = "";
     if (e.keyCode === 13) {
       let kode = inpKode.value;
       let ref = database.ref("regkeys/" + kode);
@@ -51,24 +54,24 @@ function setup() {
           // found a key
           // must check count, start and duration
           if (regkey.count < 1) {
-            inpKode.dataset.msg = "oppbrukt";
+            lblKode.dataset.msg = "exhausted";
             return;
           }
           let [h, m] = regkey.start.split(":");
           let keymin = 60 * +h + +m;
           let dur = +regkey.duration;
           if (keymin > minutes || keymin + dur < minutes) {
-            inpKode.dataset.msg = "utløpt";
+            lblKode.dataset.msg = "expired";
             return;
           }
           let rom = regkey.room;
           let teach = regkey.teach;
           divMelding.querySelector("h4").innerHTML = displayName;
-          lblMelding.innerHTML = `Registrert på ${ rom }<br>av ${ teach }`;
+          lblMelding.innerHTML = `Registrert på ${rom}<br>av ${teach}`;
           divMelding.classList.remove("hidden");
           divRegistrer.classList.add("hidden");
         } else {
-          inpKode.dataset.msg = "invalid";
+          lblKode.dataset.msg = "invalid";
         }
       });
     }
@@ -191,6 +194,7 @@ function setup() {
             // this is a known user
             knownUser(uid);
           } else {
+            // allow user to sign up with google/facebook
             divSignup.classList.remove("hidden");
             divRegistrer.classList.add("hidden");
             btnSignup.addEventListener("click", signup);

@@ -21,7 +21,7 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    overflow: hidden;
+    
 }
 
 #main.aa {
@@ -84,6 +84,7 @@ div.spinner div {
 div label {
   color:rgb(60, 90, 4);
   font-size: 1.3em;
+  position: relative;
 }
 
 #main div input {
@@ -98,12 +99,13 @@ div.registrer label input {
   width: 9em;
 }
 
-div.registrer label input:after {
-  content: "hei";
+div.registrer label:before {
+  content: attr(data-msg);
   position: absolute;
-  right: 1em;
-  top: -1.2em;
-  color: blue;
+  right: 0.2em;
+  top: 1.2em;
+  color: red;
+  font-size:0.8em;
 }
 
 div.melding {

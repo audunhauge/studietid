@@ -1,19 +1,26 @@
-
-
 function setup() {
-
   let divSignup = document.querySelector("div.signup");
   let divSpinner = document.querySelector("div.spinner");
-
   let divLogin = document.querySelector("div.login");
-
+  let divRoom = document.querySelector("div.romvalg");
+  let divAntall = document.querySelector("div.antall");
+  let divStart = document.querySelector("div.start");
+  let divTid = document.querySelector("div.tidsfrist");
+  let divMelding = document.querySelector("div.melding");
   let btnLogin = divLogin.querySelector("button");
   let btnSignup = divSignup.querySelector("button");
   let inpOnetime = divSignup.querySelector("input");
 
+  let trueName; // name registered by school
   let displayName; // name as known to id-provider
   let userid; // google id (or facebook)
   let uid; // internal id
+  let rooms; // list of rooms
+
+  let rom;
+  let antall;
+  let start;
+  let duration;
 
   let validOneTime = false; // used to check one time code
 
@@ -49,23 +56,23 @@ function setup() {
     });
 
     /**
-     * Check if onetime already used
-     * if not used - connect userid (provider) with local id
-     * userid is available in enclosing scope (provider id)
-     * @param {int} id  - local uid
-     */
+       * Check if onetime already used
+       * if not used - connect userid (provider) with local id
+       * userid is available in enclosing scope (provider id)
+       * @param {int} id  - local uid
+       */
     function validateSignUp(id) {
       // we fetch data for user given by uid
-      let ref = database.ref("userid/" + userid);
+      let ref = database.ref("teachid/" + userid);
       ref.once("value").then(function (snapshot) {
         let aUserId = snapshot.val();
         if (aUserId) {
           // already used
           inpOnetime.value += " invalid";
         } else {
-          // register userid:uid 
+          // register userid:uid
           // userid from provider, uid is local id
-          let ref = database.ref("userid/" + userid);
+          //let ref = database.ref("userid/" + userid);
           ref.set(id);
           knownUser(id);
         }
@@ -97,20 +104,76 @@ function setup() {
 
     function knownUser(id) {
       divSignup.classList.add("hidden");
-
-      let ref = database.ref("stud/" + id);
+      let ref = database.ref("teach/" + id);
       ref.once("value").then(function (snapshot) {
-        let student = snapshot.val();
-        if (student) {
+        let teacher = snapshot.val();
+        if (teacher) {
           // valid one time code
-          let trueName = student.fn + " " + student.ln;
+          trueName = caps(teacher.fn) + " " + caps(teacher.ln);
           if (trueName.toLocaleLowerCase() !== displayName.toLocaleLowerCase()) {
             displayName = trueName + "<br>AKA " + displayName;
           }
+          velgRom();
         } else {
           displayName += " ikke validert";
+          divMelding.classList.remove("hidden");
+          divMelding.querySelector("label").innerHTML = displayName;
         }
       });
+    }
+
+    function velgRom() {
+      divRoom.classList.remove("hidden");
+      divRoom.querySelector("h4").innerHTML = trueName;
+      let ref = database.ref("rooms");
+      ref.once("value").then(function (snapshot) {
+        rooms = snapshot.val();
+        let list = Object.keys(rooms).map(e => `<option value="${e.toUpperCase()}">`).join("");
+        divRoom.querySelector("datalist").innerHTML = list;
+      });
+      divRoom.querySelector("input").addEventListener("keyup", valgtRom);
+    }
+
+    function valgtRom(e) {
+      let room = divRoom.querySelector("input").value.toLowerCase();
+      if (e.keyCode === 13 && rooms[room]) {
+        // valid room
+        rom = room; // outer scope
+        divRoom.classList.add("hidden");
+        velgAntall();
+      }
+    }
+
+    function velgAntall() {
+      divAntall.classList.remove("hidden");
+      divAntall.querySelector("h4").innerHTML = trueName;
+      divAntall.querySelector("input").addEventListener("keyup", valgtAntall);
+    }
+
+    function valgtAntall(e) {
+      antall = divAntall.querySelector("input").valueAsNumber;
+      if (e.keyCode === 13 && antall > 0 && antall < 190) {
+        // valid antall
+        divAntall.classList.add("hidden");
+        velgStart();
+      }
+    }
+
+    function velgStart() {
+      divStart.classList.remove("hidden");
+      divStart.querySelector("h4").innerHTML = trueName;
+      divStart.querySelector("input").addEventListener("keyup", valgtStart);
+    }
+
+    function valgtStart(e) {
+      start = divStart.querySelector("input").value;
+      if (e.keyCode === 13 && start) {
+        // valid antall
+        divStart.classList.add("hidden");
+        // velgVarighet();
+        divMelding.classList.remove("hidden");
+        divMelding.querySelector("label").innerHTML = `rom:${rom} antall:${antall} start:${start}`;
+      }
     }
 
     firebase.auth().onAuthStateChanged(function (user) {
@@ -126,7 +189,7 @@ function setup() {
         displayName = user.displayName;
         userid = user.uid;
 
-        let ref = database.ref("userid/" + userid);
+        let ref = database.ref("teachid/" + userid);
         ref.once("value").then(function (snapshot) {
           uid = snapshot.val();
           divSpinner.classList.add("hidden");
