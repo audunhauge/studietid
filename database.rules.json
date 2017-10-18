@@ -16,13 +16,30 @@
           ".write": "auth.uid === $uid"
       }
     },
+    "teachid": {
+      ".read": "root.child('teachid').child(auth.uid).exists() === true",
+      "$uid": {
+          ".read": "auth.uid === $uid",
+          ".write": "auth.uid === $uid"
+      }
+    },
+    "rooms": {
+      ".read": "auth.uid != null"
+    },  
+    "teach": {
+      ".read": "root.child('teachid').child(auth.uid).exists() === true",
+      "$uid": {
+          ".read": "auth.uid === $uid",
+          ".write": "auth.uid === $uid"
+      }
+    },
     "onetime": {
         "$otp": {
           ".read": "$otp !== 2"
         }     
     },   
     "registrert": {
-       ".read": "root.child('teachid').child(auth.uid).exists() === true",     
+       ".read": "root.child('teachid').child(auth.uid).exists() === true"
     },   
     "regkeys": {
        ".read": "root.child('teachid').child(auth.uid).exists() === true", 
