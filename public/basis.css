@@ -99,7 +99,7 @@ div.registrer label input {
   width: 9em;
 }
 
-div.registrer label:before {
+#main label:before {
   content: attr(data-msg);
   position: absolute;
   right: 0.2em;

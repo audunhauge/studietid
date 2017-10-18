@@ -20,6 +20,7 @@ function setup() {
   let lblMelding = divMelding.querySelector("label");
   let btnLogin = divLogin.querySelector("button");
   let btnSignup = divSignup.querySelector("button");
+  let lblSignup = divSignup.querySelector("label");
   let inpOnetime: any = divSignup.querySelector("input");
 
   let displayName; // name as known to id-provider
@@ -159,7 +160,7 @@ function setup() {
           // valid one time code
           validateSignUp(uid);
         } else {
-          inpOnetime.value += " invalid";
+          lblSignup.dataset.msg = "invalid";
         }
       });
     }
