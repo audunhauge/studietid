@@ -9,14 +9,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Generer kode</title>
 
-
-    <!-- update the version number as needed -->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script defer src="/__/firebase/4.5.0/firebase-app.js"></script>
     <script defer src="/__/firebase/4.5.0/firebase-auth.js"></script>
     <script defer src="/__/firebase/4.5.0/firebase-database.js"></script>
-    <!--script defer src="/__/firebase/4.5.0/firebase-messaging.js"></script-->
-    <!--script defer src="/__/firebase/4.5.0/firebase-storage.js"></script-->
     <script defer src="/__/firebase/init.js"></script>
 
 
@@ -52,14 +48,14 @@
         </div>
 
         <div class="start hidden">
-                <h4></h4>
-                <label>
+            <h4></h4>
+            <label>
                     Velg start-tid(hh:mm):
                     <p>
                         <input class="tid" type="time">
                     </p>
                 </label>
-            </div>
+        </div>
 
         <div class="tidsfrist hidden">
             <h4></h4>
@@ -85,9 +81,9 @@
 
         <div class="signup hidden">
             <h4>Oppgi engangskode</h4>
-            For å identifisere deg må du oppgi en enganskode som du får av kontoret. Dette skjer bare første gang. Deretter trenger du
-            bare autentisering fra google eller facebook (på mobilen din vil du vanligvis være autentisert fra før).
-            <br>
+            <div title="Dette skjer bare første gang. Deretter trenger du bare autentisering fra google eller facebook (på mobilen din vil du vanligvis være autentisert fra før).">
+                For å identifisere deg må du oppgi en enganskode som du får av kontoret.
+            </div>
             <label>
                 Skriv inn enganskoden:
                 <br> (12 tegn)

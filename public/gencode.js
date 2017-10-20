@@ -125,6 +125,7 @@ function setup() {
     function velgRom() {
       divRoom.classList.remove("hidden");
       divRoom.querySelector("h4").innerHTML = trueName;
+      divRoom.querySelector("input").focus();
       let ref = database.ref("rooms");
       ref.once("value").then(function (snapshot) {
         rooms = snapshot.val();
@@ -146,6 +147,7 @@ function setup() {
 
     function velgAntall() {
       divAntall.classList.remove("hidden");
+      divAntall.querySelector("input").focus();
       divAntall.querySelector("h4").innerHTML = trueName;
       divAntall.querySelector("input").addEventListener("keyup", valgtAntall);
     }
@@ -161,6 +163,7 @@ function setup() {
 
     function velgStart() {
       divStart.classList.remove("hidden");
+      divStart.querySelector("input").focus();
       divStart.querySelector("h4").innerHTML = trueName;
       divStart.querySelector("input").addEventListener("keyup", valgtStart);
     }
@@ -168,11 +171,27 @@ function setup() {
     function valgtStart(e) {
       start = divStart.querySelector("input").value;
       if (e.keyCode === 13 && start) {
-        // valid antall
+        // valid start
         divStart.classList.add("hidden");
-        // velgVarighet();
+        velgVarighet();
+      }
+    }
+
+    function velgVarighet() {
+      divTid.classList.remove("hidden");
+      divTid.querySelector("input").focus();
+      divTid.querySelector("h4").innerHTML = trueName;
+      divTid.querySelector("input").addEventListener("keyup", valgtVarighet);
+    }
+
+    function valgtVarighet(e) {
+      duration = divTid.querySelector("input").valueAsNumber;
+      if (e.keyCode === 13 && duration > 0 && duration < 150) {
+        // valid duration 0 ... 150 min
+        divTid.classList.add("hidden");
         divMelding.classList.remove("hidden");
-        divMelding.querySelector("label").innerHTML = `rom:${rom} antall:${antall} start:${start}`;
+        divMelding.querySelector("label").innerHTML = `rom:${rom} antall:${antall}
+           start:${start} varighet:${duration}`;
       }
     }
 

@@ -21,7 +21,7 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
-    
+    overflow: hidden;
 }
 
 #main.aa {
@@ -31,7 +31,7 @@
 
 
 #main.bb {
-  background-color: var(--bakgrunn1);
+  background-color: var(--bakgrunn3);
 }
 
 #main.cc {
@@ -44,11 +44,12 @@
 
 #main div {
   text-align: center;
+  padding-top:10px;
 }
 
 div.header {
   position: absolute;
-  height: 12%;
+  height: 10%;
   width: 100%;
   top:0;
   left:0;
@@ -59,9 +60,10 @@ div.header {
   padding-top:1em;
 }
 
-div.spinner div {
-  width: 2em;
-  height: 2em;
+#main div.spinner div {
+  padding: 0;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: solid gray 5px;
   border-bottom-color: transparent;

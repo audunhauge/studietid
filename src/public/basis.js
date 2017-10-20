@@ -9,7 +9,6 @@ declare var firebase: {
 };
 
 function setup() {
-
   let divSignup: any = document.querySelector("div.signup");
   let divRegistrer: any = document.querySelector("div.registrer");
   let divSpinner: any = document.querySelector("div.spinner");
@@ -141,11 +140,21 @@ function setup() {
           // already used
           inpOnetime.value += " invalid";
         } else {
-          // register userid:uid
-          // userid from provider, uid is local id
-          let ref = database.ref("userid/" + userid);
-          ref.set(id);
-          knownUser(id);
+          // try to update stud/id/userid
+          // this is allowed if the slot is empty - onetime not used
+          let ref = database.ref("stud/" + id + "/userid");
+          ref
+            .set(userid)
+            .then(() => {
+              // register userid:uid
+              // userid from provider, uid is local id
+              let ref = database.ref("userid/" + userid);
+              ref.set(id);
+              knownUser(id);
+            })
+            .catch(err => {
+              inpOnetime.value += " taken";
+            });
         }
       });
     }

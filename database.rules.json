@@ -50,7 +50,10 @@
      "stud": {
       ".read": "root.child('teachid').child(auth.uid).exists() === true",
       "$uid": {
-        ".read":"$uid !== 2"
+        ".read":"$uid !== 2",
+        "userid": {
+          ".write": "!data.exists()"
+        }
       }
     }
 
