@@ -44,7 +44,8 @@
     "regkeys": {
        ".read": "root.child('teachid').child(auth.uid).exists() === true", 
        "$key": {
-         ".read": "$key !== 2"
+         ".read": "$key !== 2",
+         ".write": "root.child('teachid').child(auth.uid).exists() === true"
        }
     }, 
      "stud": {

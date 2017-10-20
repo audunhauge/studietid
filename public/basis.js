@@ -65,9 +65,9 @@ function setup() {
             return;
           }
           let rom = regkey.room;
-          let teach = regkey.teach;
+          let teachid = regkey.teachid;
           divMelding.querySelector("h4").innerHTML = displayName;
-          lblMelding.innerHTML = `Registrert på ${rom}<br>av ${teach}`;
+          lblMelding.innerHTML = `Registrert på ${ rom }<br>av ${ teachid }`;
           divMelding.classList.remove("hidden");
           divRegistrer.classList.add("hidden");
         } else {
