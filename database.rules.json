@@ -1,13 +1,35 @@
-{
+{ 
   "rules": {
     "admin": {
       ".read": "root.child('teachid').child(auth.uid).exists() === true"
     },
     "kontaktreg": {
-      ".read": "root.child('teachid').child(auth.uid).exists() === true"
+      ".read": "root.child('teachid').child(auth.uid).exists() === true",
+      "$teach": {
+         "$date":{
+            "$reg": {
+              "$count": {
+                "$uid": {
+                  ".write":"root.child('userid').child(auth.uid).val() === $uid && root.child('teach').child($teach).exists() === true  && root.child('idag').val() === $date && $count.matches(/[0-9A-F]+/) && root.child('regkeys').child($reg).child('count').val() > $count"
+                }
+              }
+            }
+         }
+      }
+    },
+    "registrert": {
+      ".read": "root.child('teachid').child(auth.uid).exists() === true",
+      "$date":{
+         "$reg" : {
+           "$uid": {
+              ".write":"root.child('regkeys').child($reg).exists() === true && root.child('idag').val() === $date && root.child('userid').child(auth.uid).val() === $uid"
+           }
+         }
+      }
     },
     "studreg": {
-      ".read": "root.child('teachid').child(auth.uid).exists() === true"
+      ".read": "root.child('teachid').child(auth.uid).exists() === true",
+      ".validate": "newData.child('timestamp').val() > (now-600000)"
     },
     "userid": {
       ".read": "root.child('teachid').child(auth.uid).exists() === true",
@@ -37,10 +59,7 @@
         "$otp": {
           ".read": "$otp !== 2"
         }     
-    },   
-    "registrert": {
-       ".read": "root.child('teachid').child(auth.uid).exists() === true"
-    },   
+    },     
     "regkeys": {
        ".read": "root.child('teachid').child(auth.uid).exists() === true", 
        "$key": {
