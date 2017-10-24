@@ -32,7 +32,7 @@ function setup() {
     let start;
     let duration;
     let teacher;
-    let teachid;
+    let teach;
 
     let validOneTime = false; // used to check one time code
 
@@ -127,7 +127,7 @@ function setup() {
                 teacher = snapshot.val();
                 if (teacher) {
                     // valid one time code
-                    teachid = id;
+                    teach = id;
                     trueName = caps(teacher.fn) + " " + caps(teacher.ln);
                     if (
                         trueName.toLocaleLowerCase() !== displayName.toLocaleLowerCase()
@@ -226,7 +226,7 @@ function setup() {
         function generateRegistrationCode() {
             // kill all existing keys owned by this teach
             let killref = firebase.database().ref('regkeys');
-            killref.orderByChild('teachid').equalTo(teachid).once('value', snapshot => {
+            killref.orderByChild('teach').equalTo(teach).once('value', snapshot => {
                  let updates = {};
                  snapshot.forEach(child => updates[child.key] = null);
                  ref.update(updates);
@@ -246,7 +246,7 @@ function setup() {
                 let now = new Date;
                 let timestamp = now.getTime();
                 let ref = database.ref("regkeys/" + nukey);
-                let key = { count, room, duration, start, teachid, timestamp};
+                let key = { count, room, duration, start, teach, timestamp};
                 ref.set(key);
                 divMelding.classList.remove("hidden");
                 divMelding.querySelector("label").innerHTML = `<h4>${nukey}</h4>
