@@ -1,0 +1,115 @@
+{
+  "admin" : {
+    "haau" : true,
+    "øvga" : true
+  },
+
+  "idag" : "20171011",    /* oppdateres til dagens dato - brukes til sjekk av gyldig dato */
+
+
+
+
+  "kontaktreg" : {        /* registrering pr kontaktlærer */
+      "øvga" : {          /* konsistens sjekkes/oppdateres når en teach ser på liste for sine elever */
+        "20171022" : {
+            "123":"haau,r210",   /* registrert av haau på r210 */
+            "124":"haau,r210"
+          
+        }
+      }
+  },
+  "roomteach" : {   /* hvilken lærer på hvilket rom, hvilken dato */
+     "r210": {
+       "20171022":"haau",
+       "20171023":"haau"
+     }
+  },
+
+  /*  Valideringsregel for roomreg
+  "roomreg": {
+    ".read": "root.child('teachid').child(auth.uid).exists() === true",
+    "$room": {
+       "$date":{
+          "$reg": {
+            "$count": {
+              "$uid": {
+                ".write":"root.child('userid').child(auth.uid).val() === $uid &&  // riktig elev
+                          root.child('rooms').child($room).exists() === true &&    // rommet finnes
+                          root.child('idag').val() === $date &&                   // riktig dato
+                          root.child('teach').child(newData.val()).exists() &&         
+                          ! root.child('roomreg').child($room).child($date).child($reg).child($count).exists() &&
+                          $count.matches(/[0-9A-F][0-9A-F]/) &&
+                          root.child('regkeys').child($reg).child('count').val() > $count"
+              }
+            }
+          }
+       }
+    }
+  } */
+  "roomreg" : {  /* validation rule sikrer at antall registrert pr nøkkel er mindre enn count*/
+    "r210" : {
+      "20171011" : {
+        "12345" : {
+          "01" : {
+            "122" : "øvga"  /* kontaktlærer */
+          }
+        }
+      }
+    }
+  },
+
+  "onetime" : {
+    "1234567890" : 124,
+    "1234567891" : 123,
+    "1234567890ab" : "haau",
+    "1234567890ac" : "fuge",
+    "202cb962ac" : 123
+  },
+  "regkeys" : {
+    "12345" : {
+      "count" : "18",
+      "duration" : 20,
+      "start" : "12:10",
+      "teach" : "øvga",
+      "timestamp" : "now"
+    }
+  },
+  "rooms" : {
+    "r101" : true,
+    "r102" : true,
+    "r210" : true
+  },
+  "stud" : {
+    "123" : {
+      "fn" : "ole",
+      "klasse" : "1sta",
+      "kontakt" : "øvga",
+      "ln" : "olsen"
+    },
+    "124" : {
+      "fn" : "geir tore",
+      "klasse" : "1stb",
+      "kontakt" : "fuge",
+      "ln" : "furås",
+      "userid" : "cx99hOBxX5aIgKghgcesOxln8JY2"
+    }
+  },
+  "teach" : {
+    "haau" : {
+      "fn" : "audun",
+      "ln" : "hauge"
+    },
+    "øvga" : {
+      "fn" : "gaute",
+      "ln" : "øvrebekk"
+    }
+  },
+  "teachid" : {
+    "cx99hOBxX5aIgKghgcesOxln8JY2" : "haau",
+    "uidFromAuthProvider" : "teach id"
+  },
+  "userid" : {
+    "cx99hOBxX5aIgKghgcesOxln8JY2" : "124",
+    "uidFromAuthProvider" : "stud id"
+  }
+}
