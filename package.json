@@ -1,0 +1,25 @@
+{
+  "name": "studietid",
+  "version": "1.0.0",
+  "description": "studietid registrering",
+  "main": "csv2json.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/audunhauge/studietid.git"
+  },
+  "keywords": [
+    "firebase"
+  ],
+  "author": "Audun Hauge",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/audunhauge/studietid/issues"
+  },
+  "homepage": "https://github.com/audunhauge/studietid#readme",
+  "dependencies": {
+    "convert-excel-to-json": "^1.2.0"
+  }
+}
