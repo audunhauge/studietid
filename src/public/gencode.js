@@ -176,9 +176,10 @@ function setup() {
         }
 
         function valgtAntall(e: KeyboardEvent) {
-            count = divAntall.querySelector("input").valueAsNumber;
-            if (e.keyCode === 13 && count > 0 && count < 190) {
+            let ncount = divAntall.querySelector("input").valueAsNumber;
+            if (e.keyCode === 13 && ncount > 0 && ncount < 190) {
                 // valid antall
+                count = String(ncount);
                 divAntall.classList.add("hidden");
                 velgStart();
             }
@@ -189,6 +190,15 @@ function setup() {
             divStart.querySelector("input").focus();
             divStart.querySelector("h4").innerHTML = trueName;
             divStart.querySelector("input").addEventListener("keyup", valgtStart);
+            divStart.querySelector("button").addEventListener("click", goodStart);
+        }
+
+        function goodStart() {
+            start = divStart.querySelector("input").value;
+            if (start) {
+                divStart.classList.add("hidden");
+                velgVarighet();
+            }
         }
 
         function valgtStart(e: KeyboardEvent) {
@@ -231,8 +241,19 @@ function setup() {
                  snapshot.forEach(child => updates[child.key] = null);
                  ref.update(updates);
             });
+            // sjekk at idag er oppdatert
+            let now = new Date;
+            let datestr = now.toJSON().substr(0, 10).replace(/-/g, '');  // yyyymmdd
+            let ref = database.ref("idag");   
+            ref.once("value").then(function (snapshot) {
+                let today = snapshot.val();
+                if (today !== datestr) {
+                    let ref = database.ref("idag"); 
+                    ref.set(datestr);
+                }
+            })
             // create a new unique key
-            let ref = database.ref("regkeys");   // can read if teacher
+            ref = database.ref("regkeys");   // can read if teacher
             ref.once("value").then(function (snapshot) {
                 let list = snapshot.val();
                 let keys = Object.keys(list);
@@ -243,7 +264,7 @@ function setup() {
                     let residue = k * k % prime;
                     nukey = (k <= prime / 2) ? residue : prime - residue;
                 } while (keys.includes(nukey));
-                let now = new Date;
+                
                 let timestamp = now.getTime();
                 let ref = database.ref("regkeys/" + nukey);
                 let key = { count, room, duration, start, teach, timestamp};
@@ -253,7 +274,6 @@ function setup() {
                    Nøkkel for ${room}<br>Gjelder for ${count} elever<br>
                    start:${start} varighet:${duration}`;
             });
-
         }
 
         firebase.auth().onAuthStateChanged(function (user) {

@@ -86,12 +86,13 @@ function setup() {
                     ref.once("value").then(function (snapshot) {
                         let userlist = snapshot.val();
                         let slot;
+                        let already = false;
                         if (userlist) {
                             // if we find userid - then already registered
                             // we check earlier against studreg - so this is unexpected
-                            if (Object.keys(userlist).some(e => e === uid)) {
-                                lblKode.dataset.msg = "already";
-                                return;
+                            // TODO  userlist = { "006": {124 : "haau" }}
+                            if (Object.keys(userlist).some(e => +Object.keys(userlist[e]) === +uid)) {
+                                already = true; // already stored
                             }
                             freeSlots = freeSlots.filter(e => !userlist[e]);
                         }
@@ -101,16 +102,23 @@ function setup() {
                             lblKode.dataset.msg = "expired";
                             return;
                         }
-                        let path = ['roomreg', rom, datestr, kode, slot, uid].join("/");
-                        let ref = database.ref(path);
-                        ref.set(teach).then(() => {
+                        if (!already) {
+                            let path = ['roomreg', rom, datestr, kode, slot, uid].join("/");
+                            let ref = database.ref(path);
+                            ref.set(teach).then(() => {
+                                divMelding.querySelector("h4").innerHTML = displayName;
+                                lblMelding.innerHTML = `Registrert på ${ rom }<br>av ${ teach }`;
+                                divMelding.classList.remove("hidden");
+                                divRegistrer.classList.add("hidden");
+                            }).catch(err => {
+                                inpOnetime.value += " taken";
+                            });
+                        } else {
                             divMelding.querySelector("h4").innerHTML = displayName;
-                            lblMelding.innerHTML = `Registrert på ${ rom }<br>av ${ teach }`;
+                            lblMelding.innerHTML = `Allerede registrert: ${ rom }<br>av ${ teach }`;
                             divMelding.classList.remove("hidden");
                             divRegistrer.classList.add("hidden");
-                        }).catch(err => {
-                            inpOnetime.value += " taken";
-                        });
+                        }
                         // store with inverted keys for quick access
                         let kontakt = student.kontakt;
                         path = ['kontaktreg', kontakt, datestr, uid].join("/");
@@ -205,7 +213,10 @@ function setup() {
                     lblSignup.dataset.msg = "invalid";
                 }
             });
-        }
+        } // TODO check if user already registered
+        /*
+          read list of reg users, display msg if already and return
+        */
 
         function validate(e) {
             let otc = inpOnetime.value;
@@ -216,10 +227,6 @@ function setup() {
         }
 
         function knownUser(id) {
-            // TODO check if user already registered
-            /*
-              read list of reg users, display msg if already and return
-            */
             let path = ['studreg', uid, datestr].join("/");
             let ref = database.ref(path);
             ref.once("value").then(function (snapshot) {
