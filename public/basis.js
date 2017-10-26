@@ -107,7 +107,7 @@ function setup() {
                             let ref = database.ref(path);
                             ref.set(teach).then(() => {
                                 divMelding.querySelector("h4").innerHTML = displayName;
-                                lblMelding.innerHTML = `Registrert på ${ rom }<br>av ${ teach }`;
+                                lblMelding.innerHTML = `Registrert på ${rom}<br>av ${teach}`;
                                 divMelding.classList.remove("hidden");
                                 divRegistrer.classList.add("hidden");
                             }).catch(err => {
@@ -115,7 +115,7 @@ function setup() {
                             });
                         } else {
                             divMelding.querySelector("h4").innerHTML = displayName;
-                            lblMelding.innerHTML = `Allerede registrert: ${ rom }<br>av ${ teach }`;
+                            lblMelding.innerHTML = `Allerede registrert: ${rom}<br>av ${teach}`;
                             divMelding.classList.remove("hidden");
                             divRegistrer.classList.add("hidden");
                         }
@@ -123,12 +123,12 @@ function setup() {
                         let kontakt = student.kontakt;
                         path = ['kontaktreg', kontakt, datestr, uid].join("/");
                         ref = database.ref(path);
-                        ref.set(`${ teach },${ rom }`).catch(err => {
+                        ref.set(`${teach},${rom}`).catch(err => {
                             // ignoring error - can be rebuilt from roomreg
                         });
                         path = ['studreg', uid, datestr].join("/");
                         ref = database.ref(path);
-                        ref.set(`${ teach },${ rom }`).catch(err => {
+                        ref.set(`${teach},${rom}`).catch(err => {
                             // ignoring error - can be rebuilt from roomreg
                         });
                     });
@@ -213,10 +213,7 @@ function setup() {
                     lblSignup.dataset.msg = "invalid";
                 }
             });
-        } // TODO check if user already registered
-        /*
-          read list of reg users, display msg if already and return
-        */
+        }
 
         function validate(e) {
             let otc = inpOnetime.value;
@@ -234,12 +231,13 @@ function setup() {
                 if (reg) {
                     let [teach, rom] = reg.split(",");
                     divMelding.querySelector("h4").innerHTML = displayName;
-                    lblMelding.innerHTML = `Registrert på ${ rom }<br>av ${ teach }
-                    <br><img src="${ photoURL }">`;
+                    lblMelding.innerHTML = `Registrert på ${rom}<br>av ${teach}
+                    <br><img src="${photoURL}">`;
                     divMelding.classList.remove("hidden");
                 } else {
                     divSignup.classList.add("hidden");
                     divRegistrer.classList.remove("hidden");
+                    inpKode.focus();
                     ref = database.ref("stud/" + id);
                     ref.once("value").then(function (snapshot) {
                         student = snapshot.val();

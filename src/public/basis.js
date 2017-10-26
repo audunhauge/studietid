@@ -235,10 +235,7 @@ function setup() {
                     lblSignup.dataset.msg = "invalid";
                 }
             });
-        } // TODO check if user already registered
-            /*
-              read list of reg users, display msg if already and return
-            */
+        } 
 
         function validate(e: KeyboardEvent) {
             let otc = inpOnetime.value;
@@ -262,6 +259,7 @@ function setup() {
                 } else {
                     divSignup.classList.add("hidden");
                     divRegistrer.classList.remove("hidden");
+                    inpKode.focus();
                     ref = database.ref("stud/" + id);
                     ref.once("value").then(function (snapshot) {
                         student = snapshot.val();

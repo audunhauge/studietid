@@ -132,7 +132,7 @@ function setup() {
             let ref = database.ref("rooms");
             ref.once("value").then(function (snapshot) {
                 rooms = snapshot.val();
-                let list = Object.keys(rooms).map(e => `<option value="${ e.toUpperCase() }">`).join("");
+                let list = Object.keys(rooms).map(e => `<option value="${e.toUpperCase()}">`).join("");
                 divRoom.querySelector("datalist").innerHTML = list;
             });
             divRoom.querySelector("input").addEventListener("keyup", valgtRom);
@@ -231,9 +231,9 @@ function setup() {
                     let ref = database.ref("idag");
                     ref.set(datestr);
                 }
-            });
+            }
             // create a new unique key
-            ref = database.ref("regkeys"); // can read if teacher
+            );ref = database.ref("regkeys"); // can read if teacher
             ref.once("value").then(function (snapshot) {
                 let list = snapshot.val();
                 let keys = Object.keys(list);
@@ -250,9 +250,9 @@ function setup() {
                 let key = { count, room, duration, start, teach, timestamp };
                 ref.set(key);
                 divMelding.classList.remove("hidden");
-                divMelding.querySelector("label").innerHTML = `<h4>${ nukey }</h4>
-                   Nøkkel for ${ room }<br>Gjelder for ${ count } elever<br>
-                   start:${ start } varighet:${ duration }`;
+                divMelding.querySelector("label").innerHTML = `<h4>${nukey}</h4>
+                   Nøkkel for ${room}<br>Gjelder for ${count} elever<br>
+                   start:${start} varighet:${duration}`;
             });
         }
 
