@@ -32,6 +32,8 @@ function xl2j(dir, file) {
         for (s of entries) {
             let { enr, klasse, navn, kontakt } = s;
             let [ln, fn] = navn.toLocaleLowerCase().split(',');
+            ln = ln.trim();
+            fn = fn.trim();
             if (klasse === undefined|| kontakt === undefined) {
                 console.error("mangelful",s);
             }
