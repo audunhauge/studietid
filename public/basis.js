@@ -131,6 +131,8 @@ function setup() {
                         ref.set(`${teach},${rom}`).catch(err => {
                             // ignoring error - can be rebuilt from roomreg
                         });
+                        firebase.goOffline();
+                        // free up connection
                     });
                 } else {
                     lblKode.dataset.msg = "invalid";

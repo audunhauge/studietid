@@ -1,5 +1,11 @@
-// leser inn en xls fil med elever og lager en json  fil som kan lastes inn i firebase
+// leser inn en mappe med xlsx filer med elever og lager en json fil som kan lastes inn i firebase
 // BRUK:  node xls2json.js mappeNavn
+// mappenavn inneholder xls/xlsx filer
+// strukturen på hver er:
+// rad 1 er overskrifter (ignoreres)
+// EXCEL-FIL
+// enr   klasse   navn          kontakt
+// 123   1STA     olsen, ole    huro
 
 
 const excelToJson = require('convert-excel-to-json');
@@ -28,6 +34,7 @@ function xl2j(dir, file) {
 
 
         let entries = result[Object.keys(result)[0]];
+        // bare ark1 inneholder data
 
         for (s of entries) {
             let { enr, klasse, navn, kontakt } = s;
@@ -36,6 +43,7 @@ function xl2j(dir, file) {
             fn = fn.trim();
             if (klasse === undefined|| kontakt === undefined) {
                 console.error("mangelful",s);
+                // 2017 - 1 elev mangler kontaktlærer
             }
             kontakt = kontakt ? kontakt.toLocaleLowerCase() : '';
             klasse = klasse ? klasse.toLocaleLowerCase() : '';

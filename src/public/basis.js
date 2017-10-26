@@ -6,7 +6,8 @@ declare function randomChoice(arr: Array<any>): any;
 declare var firebase: {
     app: () => any,
     auth: () => any,
-    database: () => any
+    database: () => any,
+    goOffline: () => any
 };
 
 function setup() {
@@ -142,7 +143,8 @@ function setup() {
                         ref.set(`${teach},${rom}`).catch(err => {
                             // ignoring error - can be rebuilt from roomreg
                         });
-
+                        firebase.goOffline();
+                        // free up connection
                     });
 
                 } else {
