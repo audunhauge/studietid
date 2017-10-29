@@ -27,9 +27,6 @@ function setup() {
     inpKode.addEventListener("keyup", registrer);
 
     let now = new Date();
-    let h = now.getHours();
-    let m = now.getMinutes();
-    let minutes = h * 60 + m;
     let datestr = now.toJSON().substr(0, 10).replace(/-/g, '');
 
     /*******************
@@ -50,10 +47,13 @@ function setup() {
      */
 
     function registrer(e) {
-
         lblKode.dataset.msg = "";
         if (e.keyCode === 13) {
             let kode = inpKode.value;
+            let now = new Date();
+            let h = now.getHours();
+            let m = now.getMinutes();
+            let minutes = h * 60 + m;
             let ref = database.ref("regkeys/" + kode);
             ref.once("value").then(function (snapshot) {
                 let regkey = snapshot.val();
@@ -131,7 +131,12 @@ function setup() {
                         ref.set(`${teach},${rom}`).catch(err => {
                             // ignoring error - can be rebuilt from roomreg
                         });
-                        firebase.goOffline();
+                        path = ['registrert', datestr, uid, kode].join("/");
+                        ref = database.ref(path);
+                        ref.set(`${teach},${rom}`).catch(err => {
+                            // ignoring error - can be rebuilt from roomreg
+                        });
+                        firebase.database().goOffline();
                         // free up connection
                     });
                 } else {

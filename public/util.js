@@ -1,5 +1,8 @@
+// @flow
+
 function caps(s) {
-   return s.charAt(0).toLocaleUpperCase() + s.substr(1).toLocaleLowerCase();
+   return s.split(/\s+/).map(s => s.charAt(0).toLocaleUpperCase() 
+   + s.substr(1).toLocaleLowerCase() ).join(' ');
 }
 
 function randomChoice(arr) {

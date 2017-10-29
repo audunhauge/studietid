@@ -139,7 +139,31 @@ function setup() {
                     displayName += " ikke validert";
                     divMelding.classList.remove("hidden");
                     divMelding.querySelector("label").innerHTML = displayName;
+                }  function velgRom() {
+                    divRoom.classList.remove("hidden");
+                    divRoom.querySelector("h4").innerHTML = trueName;
+                    divRoom.querySelector("input").focus();
+                    let ref = database.ref("rooms");
+                    ref.once("value").then(function (snapshot) {
+                        rooms = snapshot.val();
+                        let list = Object.keys(rooms)
+                            .map(e => `<option value="${e.toUpperCase()}">`)
+                            .join("");
+                        divRoom.querySelector("datalist").innerHTML = list;
+                    });
+                    divRoom.querySelector("input").addEventListener("keyup", valgtRom);
                 }
+        
+                function valgtRom(e: KeyboardEvent) {
+                    let myroom = divRoom.querySelector("input").value.toLowerCase();
+                    if (e.keyCode === 13 && rooms[myroom]) {
+                        // valid room
+                        room = myroom;   // outer scope
+                        divRoom.classList.add("hidden");
+                        velgAntall();
+                    }
+                }
+        
             });
         }
 

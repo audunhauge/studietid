@@ -9,10 +9,15 @@ declare var firebase: {
 };
 
 function setup() {
-    let divSignup: any = document.querySelector("div.signup");
-    
+    let divSpinner: any = document.querySelector("div.spinner");
+    let divRoom: any = document.querySelector("div.romvalg");
+
 
     let database = firebase.database();
+    let trueName, rooms, room;
+
+    let now = new Date();
+    let datestr = now.toJSON().substr(0, 10).replace(/-/g, '');
 
 
     function initApp() {
@@ -39,30 +44,58 @@ function setup() {
                 }
             });
 
-       
+
 
         function knownUser(id: number) {
-            divSignup.classList.add("hidden");
+            divSpinner.classList.add("hidden");
             let ref = database.ref("teach/" + id);
             ref.once("value").then(function (snapshot) {
                 let teacher = snapshot.val();
                 if (teacher) {
                     // valid one time code
                     let teach = id;
-                    
-                    visListe();
-                } 
+                    trueName = caps(teacher.fn) + caps(teacher.ln);
+
+                    velgRom();
+                }
             });
         }
 
-        function visListe() {
-            let ref = database.ref("teach/" + id);
-            ref.on("value").then(function (snapshot) {
-                let teacher = snapshot.val();
-                if (teacher) {
+        function velgRom() {
+            divRoom.classList.remove("hidden");
+            divRoom.querySelector("h4").innerHTML = trueName;
+            divRoom.querySelector("input").focus();
+            let ref = database.ref("rooms");
+            ref.once("value").then(function (snapshot) {
+                rooms = snapshot.val();
+                let list = Object.keys(rooms)
+                    .map(e => `<option value="${e.toUpperCase()}">`)
+                    .join("");
+                divRoom.querySelector("datalist").innerHTML = list;
+            });
+            divRoom.querySelector("input").addEventListener("keyup", valgtRom);
         }
 
-       
+        function valgtRom(e: KeyboardEvent) {
+            let myroom = divRoom.querySelector("input").value.toLowerCase();
+            if (e.keyCode === 13 && rooms[myroom]) {
+                // valid room
+                room = myroom;   // outer scope
+                divRoom.classList.add("hidden");
+                visListe(room);
+            }
+        }
+
+        function visListe(room:string) {
+            let path = ['romreg', room, datestr].join("/");
+            let ref = database.ref(path);
+            ref.on("value").then(function (snapshot) {
+                let teacher = snapshot.val();
+                if (teacher) { }
+            });
+        }
+
+
         firebase.auth().onAuthStateChanged(function (user) {
             if (user) {
                 // User is signed in.
@@ -83,7 +116,7 @@ function setup() {
                     if (uid) {
                         // this is a known user
                         knownUser(uid);
-                    } 
+                    }
                 });
             } else {
                 //divSpinner.classList.add("hidden");
