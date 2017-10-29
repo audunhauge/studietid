@@ -279,7 +279,7 @@ function setup() {
             // create a new unique key
             ref = database.ref("regkeys");   // can read if teacher
             ref.once("value").then(function (snapshot) {
-                let list = snapshot.val();
+                let list = snapshot.val() || [];
                 let keys = Object.keys(list);
                 let nukey;
                 do {

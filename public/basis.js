@@ -194,11 +194,11 @@ function setup() {
                     // try to update stud/id/userid
                     // this is allowed if the slot is empty - onetime not used
                     let ref = database.ref("stud/" + id + "/userid");
-                    ref.set(userid).then(() => {
+                    ref.set(String(userid)).then(() => {
                         // register userid:uid
                         // userid from provider, uid is local id
                         let ref = database.ref("userid/" + userid);
-                        ref.set(id);
+                        ref.set(String(id));
                         knownUser(id);
                     }).catch(err => {
                         inpOnetime.value += " taken";
@@ -231,7 +231,7 @@ function setup() {
         }
 
         function knownUser(id) {
-            let path = ['studreg', uid, datestr].join("/");
+            let path = ['studreg', id, datestr].join("/");
             let ref = database.ref(path);
             ref.once("value").then(function (snapshot) {
                 let reg = snapshot.val();

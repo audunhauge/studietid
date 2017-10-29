@@ -1,6 +1,7 @@
 function setup() {
     let divSpinner = document.querySelector("div.spinner");
     let divRoom = document.querySelector("div.romvalg");
+    let divMelding = document.querySelector("div.melding");
 
     let database = firebase.database();
     let trueName, rooms, room;
@@ -65,11 +66,16 @@ function setup() {
         }
 
         function visListe(room) {
-            let path = ['romreg', room, datestr].join("/");
+            let path = ['roomreg', room, datestr].join("/");
             let ref = database.ref(path);
-            ref.on("value").then(function (snapshot) {
-                let teacher = snapshot.val();
-                if (teacher) {}
+            divMelding.classList.remove("hidden");
+            ref.once("value").then(function (snapshot) {
+                let list = snapshot.val();
+                if (list) {
+                    divMelding.innerHTML = `<h4>${room}</h4>` + list.join('');
+                } else {
+                    divMelding.innerHTML = `<h4>${room}</h4>` + "ingen registrert";
+                }
             });
         }
 
