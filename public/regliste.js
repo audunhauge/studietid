@@ -49,7 +49,7 @@ function setup() {
             let ref = database.ref("rooms");
             ref.once("value").then(function (snapshot) {
                 rooms = snapshot.val();
-                let list = Object.keys(rooms).map(e => `<option value="${e.toUpperCase()}">`).join("");
+                let list = Object.keys(rooms).map(e => `<option value="${ e.toUpperCase() }">`).join("");
                 divRoom.querySelector("datalist").innerHTML = list;
             });
             divRoom.querySelector("input").addEventListener("keyup", valgtRom);
@@ -72,9 +72,9 @@ function setup() {
             ref.once("value").then(function (snapshot) {
                 let list = snapshot.val();
                 if (list) {
-                    divMelding.innerHTML = `<h4>${room}</h4>` + list.join('');
+                    divMelding.innerHTML = `<h4>${ room }</h4>` + list.join('');
                 } else {
-                    divMelding.innerHTML = `<h4>${room}</h4>` + "ingen registrert";
+                    divMelding.innerHTML = `<h4>${ room }</h4>` + "ingen registrert";
                 }
             });
         }

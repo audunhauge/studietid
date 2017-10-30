@@ -85,7 +85,12 @@
           ".write": "auth.uid === $uid"
       }
     },
-    "onetime": {
+       "onetimeStud": {
+        "$otp": {
+          ".read": "$otp !== 2"
+        }     
+    }, 
+    "onetimeTeach": {
         "$otp": {
           ".read": "$otp !== 2"
         }     

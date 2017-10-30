@@ -13,6 +13,7 @@ function setup() {
 
     let trueName; // name registered by school
     let displayName; // name as known to id-provider
+    let photoURL; // teach pic
     let userid; // google id (or facebook)
     let uid; // internal id
     let rooms; // list of rooms
@@ -74,8 +75,12 @@ function setup() {
                 } else {
                     // register userid:uid
                     // userid from provider, uid is local id
-                    //let ref = database.ref("userid/" + userid);
-                    ref.set(id);
+                    let ref = database.ref("teachid/" + userid);
+                    ref.set(id).then(() => {
+                        let ref = database.ref("teach/" + id);
+                        ref.set({ pix: photoURL });
+                    });
+
                     knownUser(id);
                 }
             });
@@ -84,7 +89,7 @@ function setup() {
         function signup(e) {
             let otc = inpOnetime.value;
             // onetime pwd converts to uid (local id, not provider-id)
-            let ref = database.ref("onetime/" + otc);
+            let ref = database.ref("onetimeTeach/" + otc);
             ref.once("value").then(function (snapshot) {
                 let uid = snapshot.val();
                 if (uid) {
@@ -128,7 +133,7 @@ function setup() {
                     let ref = database.ref("rooms");
                     ref.once("value").then(function (snapshot) {
                         rooms = snapshot.val();
-                        let list = Object.keys(rooms).map(e => `<option value="${e.toUpperCase()}">`).join("");
+                        let list = Object.keys(rooms).map(e => `<option value="${ e.toUpperCase() }">`).join("");
                         divRoom.querySelector("datalist").innerHTML = list;
                     });
                     divRoom.querySelector("input").addEventListener("keyup", valgtRom);
@@ -153,7 +158,7 @@ function setup() {
             let ref = database.ref("rooms");
             ref.once("value").then(function (snapshot) {
                 rooms = snapshot.val();
-                let list = Object.keys(rooms).map(e => `<option value="${e.toUpperCase()}">`).join("");
+                let list = Object.keys(rooms).map(e => `<option value="${ e.toUpperCase() }">`).join("");
                 divRoom.querySelector("datalist").innerHTML = list;
             });
             divRoom.querySelector("input").addEventListener("keyup", valgtRom);
@@ -271,9 +276,9 @@ function setup() {
                 let key = { count, room, duration, start, teach, timestamp };
                 ref.set(key);
                 divMelding.classList.remove("hidden");
-                divMelding.querySelector("label").innerHTML = `<h4>${nukey}</h4>
-                   Nøkkel for ${room}<br>Gjelder for ${count} elever<br>
-                   start:${start} varighet:${duration}`;
+                divMelding.querySelector("label").innerHTML = `<h4>${ nukey }</h4>
+                   Nøkkel for ${ room }<br>Gjelder for ${ count } elever<br>
+                   start:${ start } varighet:${ duration }`;
             });
         }
 
@@ -282,7 +287,7 @@ function setup() {
                 // User is signed in.
                 let email = user.email;
                 let emailVerified = user.emailVerified;
-                let photoURL = user.photoURL;
+                photoURL = user.photoURL;
                 let isAnonymous = user.isAnonymous;
                 let providerData = user.providerData;
 

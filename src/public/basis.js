@@ -232,7 +232,7 @@ function setup() {
         function signup(e) {
             let otc = inpOnetime.value;
             // onetime pwd converts to uid (local id, not provider-id)
-            let ref = database.ref("onetime/" + otc);
+            let ref = database.ref("onetimeStud/" + otc);
             ref.once("value").then(function (snapshot) {
                 let uid = snapshot.val();
                 if (uid) {
