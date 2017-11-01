@@ -1,8 +1,9 @@
 // leser inn en mappe med xlsx filer med elever og lager en json fil som kan lastes inn i firebase
 // i eksemplene under har mappen navnet elever.
-// BRUK:  node xls2jsonElever.js elever > elever/elever.json    // lager elevregister
-// BRUK:  node xls2jsonElever.js elever -otp > elever/otpelever.json   // lager one time pwd for elever
+// BRUK:  node xls2jsonElever.js elever > elever/elever.json    // lager elevregister - import stud
+// BRUK:  node xls2jsonElever.js elever -otp > elever/otpelever.json   // lager one time pwd for elever - import onetimeStud
 // BRUK:  node xls2jsonElever.js elever -pwd > elever/passordliste.json    // klasseliste med passord (til utdeling)
+//        importeres til klassevisOTP
 // mappenavn inneholder xls/xlsx filer
 // strukturen på hver er:
 // rad 1 er overskrifter (ignoreres)
@@ -30,6 +31,9 @@ if (dotp === '-otp') {
     console.log(JSON.stringify(stud));
 }
 
+// bruker quadratic residues til å lage en sekvens med tall
+// hvor neste verdi ikke er lett å gjette
+// (gitt at black-hat ikke kan se denne funksjonen)
 function makeOtp(k) {
     let prime = 685420678114303;
     let residue = k * k % prime;
@@ -58,6 +62,9 @@ function xl2j(dir, file) {
         // bare ark1 inneholder data
 
         let i = 1234324;
+        // samme startverdi gir samme sekvens med otp
+        // nødvendig da vi skriver ut to forskjellige filer
+        // endre denne verdien for å få andre sekvenser
 
         for (s of entries) {
             let { enr, klasse, navn, kontakt } = s;

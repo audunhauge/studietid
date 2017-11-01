@@ -82,7 +82,7 @@
       ".read": "root.child('teachid').child(auth.uid).exists() === true",
       "$uid": {
           ".read": "auth.uid === $uid",
-          ".write": "auth.uid === $uid"
+          ".write": "root.child('teachid').child(auth.uid).val() === $uid"
       }
     },
        "onetimeStud": {

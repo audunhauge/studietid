@@ -1,11 +1,13 @@
-// leser inn en mappe med xlsx filer med elever og lager en json fil som kan lastes inn i firebase
-// BRUK:  node xls2json.js mappeNavn
+// leser inn en mappe med xlsx filer med lerare og lager en json fil som kan lastes inn i firebase
+// BRUK:  node xls2jsonTeach.js teach  // lager json fil som importeres til teach i firebase
+// BRUK:  node xls2jsonTeach.js teach -otp > elever/otpelever.json   // lager one time pwd for teach
+//        importeres til onetimeTeach
 // mappenavn inneholder xls/xlsx filer
 // strukturen på hver er:
 // rad 1 er overskrifter (ignoreres)
 // EXCEL-FIL
-// enr   klasse   navn          kontakt
-// 123   1STA     olsen, ole    huro
+// kortnavn  navn
+// haau      hauge, audun
 
 
 const excelToJson = require('convert-excel-to-json');
@@ -17,7 +19,7 @@ let dir = process.argv[2];
 let dotp = process.argv[3];
 fs.readdirSync(dir).forEach(file => xl2j(dir, file));
 
-if (dotp) {
+if (dotp === '-otp') {
     console.log(JSON.stringify(otp));
 } else {
     console.log(JSON.stringify(teach));

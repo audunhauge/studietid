@@ -129,7 +129,7 @@ function setup() {
                             divMelding.querySelector("h4").innerHTML = displayName;
                             lblMelding.innerHTML = `Allerede registrert: ${rom}<br>av ${teach}`;
                             divMelding.classList.remove("hidden");
-                            divRegistrer.classList.add("hidden"); 
+                            divRegistrer.classList.add("hidden");
                         }
                         // store with inverted keys for quick access
                         let kontakt = student.kontakt;
@@ -148,8 +148,10 @@ function setup() {
                         ref.set(`${teach},${rom}`).catch(err => {
                             // ignoring error - can be rebuilt from roomreg
                         });
-                        firebase.database().goOffline();
-                        // free up connection
+                        // setTimeout(() => firebase.database().goOffline(), 40000);
+                        // free up connection after 40s
+                        // cant do it imm because this will kill pending updates
+                        // if still pending after 40s assume network error
                     });
 
                 } else {
@@ -242,13 +244,11 @@ function setup() {
                     lblSignup.dataset.msg = "invalid";
                 }
             });
-        } 
+        }
 
         function validate(e: KeyboardEvent) {
             let otc = inpOnetime.value;
-            let n = parseInt(otc, 16);
-            let m = n.toString(16);
-            validOneTime = otc.length === 10 && m.length === 10;
+            validOneTime = otc.length === 10;
             btnSignup.disabled = !validOneTime;
         }
 
@@ -260,9 +260,19 @@ function setup() {
                 if (reg) {
                     let [teach, rom] = reg.split(",");
                     divMelding.querySelector("h4").innerHTML = displayName;
-                    lblMelding.innerHTML = `Registrert på ${rom}<br>av ${teach}
-                    <br><img src="${photoURL}">`;
+                    lblMelding.innerHTML = `Registrert på ${rom}<br>av ${teach}`;
                     divMelding.classList.remove("hidden");
+                    // try to fetch picture of teach
+                    let path = ['teach', teach, 'pix'].join("/");
+                    let ref = database.ref(path);
+                    ref.once("value").then(function (snapshot) {
+                        let src = snapshot.val();
+                        if (src) {
+                            let pix = document.createElement('img');
+                            pix.src = src;
+                            divMelding.appendChild(pix);
+                        }
+                    });
                 } else {
                     divSignup.classList.add("hidden");
                     divRegistrer.classList.remove("hidden");

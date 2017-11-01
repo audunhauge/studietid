@@ -72,7 +72,18 @@ function setup() {
             ref.once("value").then(function (snapshot) {
                 let list = snapshot.val();
                 if (list) {
-                    divMelding.innerHTML = `<h4>${ room }</h4>` + list.join('');
+                    let regs = [];
+                    for (let aa in list) {
+                        let bb = list[aa];
+                        for (let cc in bb) {
+                            let dd = bb[cc];
+                            for (let uid in dd) {
+                                regs.push([uid, dd[uid]]);
+                            }
+                        }
+                    }
+                    divMelding.innerHTML = `<h4>${ room }</h4>` + regs.join(",");
+                    ;
                 } else {
                     divMelding.innerHTML = `<h4>${ room }</h4>` + "ingen registrert";
                 }

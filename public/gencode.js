@@ -9,7 +9,7 @@ function setup() {
     let divMelding = document.querySelector("div.melding");
     let btnLogin = divLogin.querySelector("button");
     let btnSignup = divSignup.querySelector("button");
-    let inpOnetime = divSignup.querySelector("input");
+    let inpOnetime = divSignup.querySelector("input.kode");
 
     let trueName; // name registered by school
     let displayName; // name as known to id-provider
@@ -77,8 +77,10 @@ function setup() {
                     // userid from provider, uid is local id
                     let ref = database.ref("teachid/" + userid);
                     ref.set(id).then(() => {
-                        let ref = database.ref("teach/" + id);
-                        ref.set({ pix: photoURL });
+                        if (divSignup.querySelector("input.profil").checked) {
+                            let ref = database.ref("teach/" + id + "/pix");
+                            ref.set(photoURL);
+                        }
                     });
 
                     knownUser(id);

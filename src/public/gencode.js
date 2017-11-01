@@ -19,7 +19,7 @@ function setup() {
     let divMelding: any = document.querySelector("div.melding");
     let btnLogin = divLogin.querySelector("button");
     let btnSignup = divSignup.querySelector("button");
-    let inpOnetime: any = divSignup.querySelector("input");
+    let inpOnetime: any = divSignup.querySelector("input.kode");
 
     let trueName; // name registered by school
     let displayName; // name as known to id-provider
@@ -92,11 +92,13 @@ function setup() {
                     // register userid:uid
                     // userid from provider, uid is local id
                     let ref = database.ref("teachid/" + userid);
-                    ref.set(id).then( () => {
-                        let ref = database.ref("teach/" + id);
-                        ref.set({pix:photoURL});
+                    ref.set(id).then(() => {
+                        if (divSignup.querySelector("input.profil").checked) {
+                            let ref = database.ref("teach/" + id + "/pix");
+                            ref.set(photoURL);
+                        }
                     });
-                   
+
                     knownUser(id);
                 }
             });
@@ -144,7 +146,7 @@ function setup() {
                     displayName += " ikke validert";
                     divMelding.classList.remove("hidden");
                     divMelding.querySelector("label").innerHTML = displayName;
-                }  function velgRom() {
+                } function velgRom() {
                     divRoom.classList.remove("hidden");
                     divRoom.querySelector("h4").innerHTML = trueName;
                     divRoom.querySelector("input").focus();
@@ -158,7 +160,7 @@ function setup() {
                     });
                     divRoom.querySelector("input").addEventListener("keyup", valgtRom);
                 }
-        
+
                 function valgtRom(e: KeyboardEvent) {
                     let myroom = divRoom.querySelector("input").value.toLowerCase();
                     if (e.keyCode === 13 && rooms[myroom]) {
@@ -168,7 +170,7 @@ function setup() {
                         velgAntall();
                     }
                 }
-        
+
             });
         }
 
@@ -266,18 +268,18 @@ function setup() {
             // kill all existing keys owned by this teach
             let killref = firebase.database().ref('regkeys');
             killref.orderByChild('teach').equalTo(teach).once('value', snapshot => {
-                 let updates = {};
-                 snapshot.forEach(child => updates[child.key] = null);
-                 ref.update(updates);
+                let updates = {};
+                snapshot.forEach(child => updates[child.key] = null);
+                ref.update(updates);
             });
             // sjekk at idag er oppdatert
             let now = new Date;
             let datestr = now.toJSON().substr(0, 10).replace(/-/g, '');  // yyyymmdd
-            let ref = database.ref("idag");   
+            let ref = database.ref("idag");
             ref.once("value").then(function (snapshot) {
                 let today = snapshot.val();
                 if (today !== datestr) {
-                    let ref = database.ref("idag"); 
+                    let ref = database.ref("idag");
                     ref.set(datestr);
                 }
             })
@@ -293,10 +295,10 @@ function setup() {
                     let residue = k * k % prime;
                     nukey = (k <= prime / 2) ? residue : prime - residue;
                 } while (keys.includes(nukey));
-                
+
                 let timestamp = now.getTime();
                 let ref = database.ref("regkeys/" + nukey);
-                let key = { count, room, duration, start, teach, timestamp};
+                let key = { count, room, duration, start, teach, timestamp };
                 ref.set(key);
                 divMelding.classList.remove("hidden");
                 divMelding.querySelector("label").innerHTML = `<h4>${nukey}</h4>
