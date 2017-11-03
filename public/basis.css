@@ -24,6 +24,16 @@
     overflow: hidden;
 }
 
+#main.reglist {
+  border-radius: 0;
+  overflow: auto;
+  min-height:20em;
+  height: auto;
+  max-height: 40em;
+  overflow: auto;
+  padding-top:3em;
+}
+
 #main.aa {
   background-color: var(--bakgrunn3);
   border-radius: 0;
@@ -122,4 +132,10 @@ div.melding img {
 
 .hidden {
   display:none;
+}
+
+
+#main div.studlist div {
+  position: relative;
+  text-align: left;
 }

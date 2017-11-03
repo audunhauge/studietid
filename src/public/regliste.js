@@ -20,6 +20,9 @@ function setup() {
     let now = new Date();
     let datestr = now.toJSON().substr(0, 10).replace(/-/g, '');
 
+    let studList; // enr:{fn,en,klasse,kontakt}
+    let teachList;  // kortnavn:{fn,en}
+
 
     function initApp() {
         firebase
@@ -44,6 +47,35 @@ function setup() {
                     console.error(error);
                 }
             });
+
+
+        /**
+         * Preload stud and teach from firebase
+         * Use localstorage if exists
+         */
+        function getStudsAndTeachers() {
+            let JSONteach = localStorage.getItem("teach");
+            if (JSONteach) {
+                teachList = JSON.parse(JSONteach);
+            } else {
+                let ref = database.ref("teach/");
+                ref.once("value").then(function (snapshot) {
+                    teachList = snapshot.val();
+                    localStorage.setItem("teach", JSON.stringify(teachList));
+                });
+            }
+            let JSONstud = localStorage.getItem("stud");
+            if (JSONstud) {
+                studList = JSON.parse(JSONstud);
+            } else {
+                let ref = database.ref("stud/");
+                ref.once("value").then(function (snapshot) {
+                    studList = snapshot.val();
+                    localStorage.setItem("stud", JSON.stringify(studList));
+                });
+            }
+            
+        }
 
 
 
@@ -94,25 +126,49 @@ function setup() {
             ref.once("value").then(function (snapshot) {
                 let list = snapshot.val();
                 if (list) {
-                    let regs = [];
-                    for(let aa in list) {
+                    let regs = [[22,2],[23,2],[24,2],[25,2],[26,2],[27,2],[28,2],[29,2],[122,2]];
+                    for (let aa in list) {
                         let bb = list[aa];
                         for (let cc in bb) {
-                           let dd = bb[cc];
-                           for (let uid in dd) {
-                             regs.push([uid,dd[uid]]);
-                           }
+                            let dd = bb[cc];
+                            for (let uid in dd) {
+                                regs.push([uid, dd[uid]]);
+                            }
                         }
                     }
-                    divMelding.innerHTML = 
-                    `<h4>${room}</h4>` + regs.join(",");
+                    let userlist = regs.map(e => {
+                       let teach = {fn:"n",ln:"nn"};
+                       let [stuid,tid] = e;
+                       if (teachList[tid]) {
+                           teach = teachList[tid];
+                       }
+                       let stud = {fn:"n",ln:"nn"};
+                       if (studList[stuid]) {
+                           stud = studList[stuid];
+                       }
+                       return (` <div><input type="checkbox" id="s${stuid}">${caps(stud.fn)} ${caps(stud.ln)}</div>`);
+                    })
+                    divMelding.innerHTML =
+                        `<h4>${room.toUpperCase()}</h4><div class="studlist">` 
+                        + userlist.join("") + '</div>';
                     ;
+                    divMelding.addEventListener("click", removeStudReg);
                 } else {
-                    divMelding.innerHTML = 
-                    `<h4>${room}</h4>` +
-                    "ingen registrert";
+                    divMelding.innerHTML =
+                        `<h4>${room}</h4>` +
+                        "ingen registrert";
                 }
             });
+        }
+
+        function removeStudReg(e:MouseEvent) {
+            if (e.offsetX < -8) {
+                let t:any = e.target;
+                if (t.id && t.id.charAt(0) === 's') {
+                  console.log(t.id);
+                }
+            }
+
         }
 
 
@@ -128,6 +184,8 @@ function setup() {
                 // created in enclosing scope
                 let displayName = user.displayName;
                 let userid = user.uid;
+
+                getStudsAndTeachers();   // preload data
 
                 let ref = database.ref("teachid/" + userid);
                 ref.once("value").then(function (snapshot) {
