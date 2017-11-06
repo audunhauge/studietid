@@ -20,6 +20,8 @@ function setup() {
     let divManual: any = document.querySelector("#manual");
     let divCriteria: any = document.querySelector("#criteria");
     let divMatch: any = document.querySelector("#match");
+    let divMain: any = document.querySelector("#main");
+
 
 
     let database = firebase.database();
@@ -119,11 +121,12 @@ function setup() {
                 divRoom.querySelector("datalist").innerHTML = list;
             });
             divRoom.querySelector("input").addEventListener("keyup", valgtRom);
+            divRoom.querySelector("button").addEventListener("click", valgtRom);
         }
 
         function valgtRom(e: KeyboardEvent) {
             let myroom = divRoom.querySelector("input").value.toLowerCase();
-            if (e.keyCode === 13 && rooms[myroom]) {
+            if (rooms[myroom]) {
                 // valid room
                 room = myroom;   // outer scope
                 divRoom.classList.add("hidden");
@@ -155,12 +158,16 @@ function setup() {
                         if (teachList[tid]) {
                             teach = teachList[tid];
                         }
-                        let stud = { fn: "n", ln: "nn" };
+                        let stud = { fn: "n", ln: "nn", klasse:"mm",kontakt:"mm" };
                         if (studList[stuid]) {
                             stud = studList[stuid];
                             registrerte.push(stuid);     // we need this to check if stud already registered
                         }
-                        return (` <li><input type="checkbox" id="s${stuid}">${caps(stud.fn)} ${caps(stud.ln)}</li>`);
+                        return `<div>
+                        <span>${caps(stud.fn)} ${caps(stud.ln)}</span>
+                        <span>${stud.klasse.toUpperCase()}</span><span>${stud.kontakt.toUpperCase()}</span>
+                        <input type="checkbox" id="s${stuid}">
+                        </div>`;
                     })
                     divHeader.innerHTML = room.toUpperCase();
                     divMelding.innerHTML = '<ol class="studlist">' + userlist.join("") + '</ol>';
@@ -275,10 +282,8 @@ function setup() {
                     function velgAlle() {
                         divMatch.querySelectorAll("input").forEach(e => e.checked = !e.checked);
                     }
-
-
-
                 } else {
+                    // too many matched
                     divMatch.innerHTML = "Treff for " + antall + " elever";
                 }
             }

@@ -107,7 +107,7 @@ function setup() {
                             let ref = database.ref(path);
                             ref.set(teach).then(() => {
                                 divMelding.querySelector("h4").innerHTML = displayName;
-                                lblMelding.innerHTML = `Registrert på ${rom}<br>av ${teach}`;
+                                lblMelding.innerHTML = `Registrert på ${ rom }<br>av ${ teach }`;
                                 divMelding.classList.remove("hidden");
                                 divRegistrer.classList.add("hidden");
                             }).catch(err => {
@@ -115,7 +115,7 @@ function setup() {
                             });
                         } else {
                             divMelding.querySelector("h4").innerHTML = displayName;
-                            lblMelding.innerHTML = `Allerede registrert: ${rom}<br>av ${teach}`;
+                            lblMelding.innerHTML = `Allerede registrert: ${ rom }<br>av ${ teach }`;
                             divMelding.classList.remove("hidden");
                             divRegistrer.classList.add("hidden");
                             return;
@@ -124,17 +124,17 @@ function setup() {
                         let kontakt = student.kontakt;
                         path = ['kontaktreg', kontakt, datestr, uid].join("/");
                         ref = database.ref(path);
-                        ref.set(`${teach},${rom}`).catch(err => {
+                        ref.set(`${ teach },${ rom }`).catch(err => {
                             // ignoring error - can be rebuilt from roomreg
                         });
                         path = ['studreg', uid, datestr].join("/");
                         ref = database.ref(path);
-                        ref.set(`${teach},${rom}`).catch(err => {
+                        ref.set(`${ teach },${ rom }`).catch(err => {
                             // ignoring error - can be rebuilt from roomreg
                         });
                         path = ['registrert', datestr, uid, kode].join("/");
                         ref = database.ref(path);
-                        ref.set(`${teach},${rom}`).catch(err => {
+                        ref.set(`${ teach },${ rom }`).catch(err => {
                             // ignoring error - can be rebuilt from roomreg
                         });
                         // setTimeout(() => firebase.database().goOffline(), 40000);
@@ -239,7 +239,7 @@ function setup() {
                 if (reg) {
                     let [teach, rom] = reg.split(",");
                     divMelding.querySelector("h4").innerHTML = displayName;
-                    lblMelding.innerHTML = `Registrert på ${rom}<br>av ${teach}`;
+                    lblMelding.innerHTML = `Registrert på ${ rom }<br>av ${ teach }`;
                     divMelding.classList.remove("hidden");
                     // try to fetch picture of teach
                     let path = ['teach', teach, 'pix'].join("/");

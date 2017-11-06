@@ -9,6 +9,7 @@ function setup() {
     let divManual = document.querySelector("#manual");
     let divCriteria = document.querySelector("#criteria");
     let divMatch = document.querySelector("#match");
+    let divMain = document.querySelector("#main");
 
     let database = firebase.database();
     let trueName, rooms, room;
@@ -92,15 +93,16 @@ function setup() {
             let ref = database.ref("rooms");
             ref.once("value").then(function (snapshot) {
                 rooms = snapshot.val();
-                let list = Object.keys(rooms).map(e => `<option value="${e.toUpperCase()}">`).join("");
+                let list = Object.keys(rooms).map(e => `<option value="${ e.toUpperCase() }">`).join("");
                 divRoom.querySelector("datalist").innerHTML = list;
             });
             divRoom.querySelector("input").addEventListener("keyup", valgtRom);
+            divRoom.querySelector("button").addEventListener("click", valgtRom);
         }
 
         function valgtRom(e) {
             let myroom = divRoom.querySelector("input").value.toLowerCase();
-            if (e.keyCode === 13 && rooms[myroom]) {
+            if (rooms[myroom]) {
                 // valid room
                 room = myroom; // outer scope
                 divRoom.classList.add("hidden");
@@ -132,17 +134,21 @@ function setup() {
                         if (teachList[tid]) {
                             teach = teachList[tid];
                         }
-                        let stud = { fn: "n", ln: "nn" };
+                        let stud = { fn: "n", ln: "nn", klasse: "mm", kontakt: "mm" };
                         if (studList[stuid]) {
                             stud = studList[stuid];
                             registrerte.push(stuid); // we need this to check if stud already registered
                         }
-                        return ` <li><input type="checkbox" id="s${stuid}">${caps(stud.fn)} ${caps(stud.ln)}</li>`;
+                        return `<div>
+                        <span>${ caps(stud.fn) } ${ caps(stud.ln) }</span>
+                        <span>${ stud.klasse.toUpperCase() }</span><span>${ stud.kontakt.toUpperCase() }</span>
+                        <input type="checkbox" id="s${ stuid }">
+                        </div>`;
                     });
                     divHeader.innerHTML = room.toUpperCase();
                     divMelding.innerHTML = '<ol class="studlist">' + userlist.join("") + '</ol>';
                 } else {
-                    divMelding.innerHTML = `<h4>${room}</h4>` + "ingen registrert";generateRegistrationCode;
+                    divMelding.innerHTML = `<h4>${ room }</h4>` + "ingen registrert";generateRegistrationCode;
                 }
             });
             divExpand.addEventListener("click", expandView);
@@ -167,7 +173,7 @@ function setup() {
                     }
                 });
             }
-            let list = Object.keys(klasser).map(e => `<option value="${e}">`).join("");
+            let list = Object.keys(klasser).map(e => `<option value="${ e }">`).join("");
             divCriteria.querySelector("datalist").innerHTML = list;
 
             let criteria = Array.from(divCriteria.querySelectorAll("input"));
@@ -197,9 +203,9 @@ function setup() {
                     });
                     divMatch.innerHTML = afterLast.map(s => {
                         return `<div>
-                            <span>${caps(s.fn)} ${caps(s.ln)}</span>
-                            <span>${s.klasse.toUpperCase()}</span><span>${s.kontakt.toUpperCase()}</span>
-                            <input type="checkbox" id="nu${s.enr}">
+                            <span>${ caps(s.fn) } ${ caps(s.ln) }</span>
+                            <span>${ s.klasse.toUpperCase() }</span><span>${ s.kontakt.toUpperCase() }</span>
+                            <input type="checkbox" id="nu${ s.enr }">
                             </div>`;
                     }).join("") + '<br><button id="reg" type="button">Registrer</button><button id="merk" type="button">Marker Alle</button>';
 
@@ -227,17 +233,17 @@ function setup() {
                             let kontakt = student.kontakt;
                             path = ['kontaktreg', kontakt, datestr, enr].join("/");
                             ref = database.ref(path);
-                            ref.set(`${uid},${room}`).catch(err => {
+                            ref.set(`${ uid },${ room }`).catch(err => {
                                 // ignoring error - can be rebuilt from roomreg
                             });
                             path = ['studreg', enr, datestr].join("/");
                             ref = database.ref(path);
-                            ref.set(`${uid},${room}`).catch(err => {
+                            ref.set(`${ uid },${ room }`).catch(err => {
                                 // ignoring error - can be rebuilt from roomreg
                             });
                             path = ['registrert', datestr, enr, kode].join("/");
                             ref = database.ref(path);
-                            ref.set(`${uid},${room}`).catch(err => {
+                            ref.set(`${ uid },${ room }`).catch(err => {
                                 // ignoring error - can be rebuilt from roomreg
                             });
                         });
@@ -248,6 +254,7 @@ function setup() {
                         divMatch.querySelectorAll("input").forEach(e => e.checked = !e.checked);
                     }
                 } else {
+                    // too many matched
                     divMatch.innerHTML = "Treff for " + antall + " elever";
                 }
             }

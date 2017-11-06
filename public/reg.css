@@ -14,10 +14,10 @@
 
 #main {
     position:relative;
-    width: 16em;
-    min-height: 20em;
-    position: relative;  
-    overflow: hidden;
+    width: 30em;
+    min-height: 30em;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 
 #main, #manual {
@@ -52,11 +52,6 @@ div.header {
   align-items: flex-start;
 }
 
-
-#main div {
-  text-align: center;
-  padding-top:10px;
-}
 
 #outer {
     position: relative;
@@ -119,19 +114,22 @@ div label {
   right:0.2em;
   color:green;
   font-size: 2em;
+  cursor: pointer;
 }
 
 
-#match {
+div.studlist {
     counter-reset: stud;
     margin-top:2em;
 }
 
-#match div {
+div.studlist div {
   width: 25em;
+  display:flex;
+  justify-content: space-between;
 }
 
-#match div:before {
+div.studlist div:before {
   counter-increment: stud;
   content: counter(stud);
   width:1.5em;
@@ -140,18 +138,14 @@ div label {
   color:blue;
 }
 
-#match div {
-    display:flex;
-    justify-content: space-between;
-}
 
-#match div span:first-child {
+div.studlist div span:first-child {
     display: inline-block;
     width: 16em;
     text-overflow: ellipsis;
 }
 
-#match div span:nth-child(n+2) {
+div.studlist div span:nth-child(n+2) {
     display: inline-block;
     width: 4em;
     color:blue;
