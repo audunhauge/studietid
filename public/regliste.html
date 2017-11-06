@@ -3,8 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" href="basis.css">
+  <link rel="stylesheet" href="reg.css">
   <script src="util.js"></script>
+  <script src="lib.js"></script>
   <script src="regliste.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Studietid</title>
@@ -20,32 +21,55 @@
 </head>
 
 <body>
-  <div id="main" class="reglist">
+  <div id="box">
+    <div id="outer">
+      <div class="header">
+        Studietid
+      </div>
+      <div id="main" class="reglist">
 
-    <div class="spinner">
-      <div></div>
+
+
+        <div class="spinner">
+          <div></div>
+        </div>
+
+        <div class="romvalg hidden">
+          <h4></h4>
+          Velg rom:
+          <p>
+            <input class="rom" list="romliste">
+            <datalist id="romliste">
+            </datalist>
+          </p>
+        </div>
+
+        <div class="melding studlist hidden">
+        </div>
+
+        <div id="expand">+</div>
+      </div>
+
+
+
     </div>
 
-    <div class="romvalg hidden">
-      <h4></h4>
-        Velg rom:
-        <p>
-          <input class="rom" list="romliste">
-          <datalist id="romliste">
-          </datalist>
-        </p>
+    <div id="manual" class="hidden">
+      <div id="criteria">
+        <label>Klasse
+          <input id="klasse" list="klasseliste">
+          <datalist id="klasseliste"></datalist>
+        </label>
+        <label>Fornavn
+          <input id="fn">
+        </label>
+        <label>Etternavn
+          <input id="ln">
+        </label>
+      </div>
+      <div id="match"></div>
     </div>
-
-    <div class="melding hidden">
-      
-    </div>
-
-    <div class="header">
-      Studietid
-    </div>
-
   </div>
-
 
 
 

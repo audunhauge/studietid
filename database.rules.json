@@ -9,6 +9,7 @@
     },
     "kontaktreg": {
       ".read": "root.child('teachid').child(auth.uid).exists() === true",
+      ".write": "root.child('teachid').child(auth.uid).exists() === true",
       "$teach": {
          "$date":{
              "$uid": {
@@ -21,6 +22,7 @@
     },
     "roomreg": {
       ".read": "root.child('teachid').child(auth.uid).exists() === true",
+      ".write": "root.child('teachid').child(auth.uid).exists() === true",
       "$room": {
          "$date":{
             "$reg": {
@@ -40,6 +42,7 @@
     },
     "registrert": {
       ".read": "root.child('teachid').child(auth.uid).exists() === true",
+      ".write": "root.child('teachid').child(auth.uid).exists() === true",
       "$date":{
          "$uid" : {
            "$reg": {
@@ -52,6 +55,7 @@
     },
     "studreg": {
       ".read": "root.child('teachid').child(auth.uid).exists() === true",
+      ".write": "root.child('teachid').child(auth.uid).exists() === true",
       "$uid": {
         ".read":"root.child('userid').child(auth.uid).val() === $uid",
         "$date": {
@@ -79,9 +83,8 @@
       ".read": "auth.uid != null"
     },  
     "teach": {
-      ".read": "root.child('teachid').child(auth.uid).exists() === true",
+      ".read": "auth.uid != null",
       "$uid": {
-          ".read": "auth.uid === $uid",
           ".write": "root.child('teachid').child(auth.uid).val() === $uid"
       }
     },

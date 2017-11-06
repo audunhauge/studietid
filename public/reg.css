@@ -15,7 +15,7 @@
 #main {
     position:relative;
     width: 16em;
-    height: 20em;
+    min-height: 20em;
     position: relative;  
     overflow: hidden;
 }
@@ -32,55 +32,37 @@
   flex-wrap: wrap;
 }
 
+div.header {
+    height: 2em;
+    width: 100%;
+    top:0;
+    left:0;
+    text-align: center;
+    font-size:1.5em;
+    color:white;
+    background-color: #5C92F5;
+    padding-top:1em;
+  }
+
 
 #manual {
-  width: 20em;
-  height: 30em;
+  width: 30em;
+  min-height: 30em;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
-#main.reglist {
-  min-height:20em;
-  height: auto;
-  max-height: 40em;
-  overflow: auto;
-  padding-top:3em;
-}
-
-#main.aa {
-  background-color: var(--bakgrunn3);
-  border-radius: 0;
-}
-
-
-#main.bb {
-  background-color: var(--bakgrunn3);
-}
-
-#main.cc {
-  background-color: var(--bakgrunn2);
-}
-
-#main.dd {
-  background-color: var(--bakgrunn4);
-}
 
 #main div {
   text-align: center;
   padding-top:10px;
 }
 
-div.header {
-  position: absolute;
-  height: 2em;
-  width: 100%;
-  top:0;
-  left:0;
-  text-align: center;
-  font-size:1.5em;
-  color:white;
-  background-color: #5C92F5;
-  padding-top:1em;
+#outer {
+    position: relative;
 }
+
+
 
 #main div.spinner div {
   padding: 0;
@@ -106,6 +88,7 @@ div.header {
 }
 
 div label {
+  display:block;
   color:rgb(60, 90, 4);
   font-size: 1.3em;
   position: relative;
@@ -116,27 +99,6 @@ div label {
   color:blue;
 }
 
-
-div.registrer label input {
-  color:green;
-  font-size: 1.3em;
-  width: 9em;
-}
-
-#main label:before {
-  content: attr(data-msg);
-  position: absolute;
-  right: 1em;
-  top: 2.8em;
-  color: red;
-  font-size:0.8em;
-  z-index:1000;
-}
-
-div.melding img {
-  width: 5em;
-  height: 5em;
-}
 
 .hidden, #manual.hidden {
   display:none;
@@ -157,4 +119,40 @@ div.melding img {
   right:0.2em;
   color:green;
   font-size: 2em;
+}
+
+
+#match {
+    counter-reset: stud;
+    margin-top:2em;
+}
+
+#match div {
+  width: 25em;
+}
+
+#match div:before {
+  counter-increment: stud;
+  content: counter(stud);
+  width:1.5em;
+  text-align: right;
+  padding-right:6px;
+  color:blue;
+}
+
+#match div {
+    display:flex;
+    justify-content: space-between;
+}
+
+#match div span:first-child {
+    display: inline-block;
+    width: 16em;
+    text-overflow: ellipsis;
+}
+
+#match div span:nth-child(n+2) {
+    display: inline-block;
+    width: 4em;
+    color:blue;
 }

@@ -130,6 +130,7 @@ function setup() {
                             lblMelding.innerHTML = `Allerede registrert: ${rom}<br>av ${teach}`;
                             divMelding.classList.remove("hidden");
                             divRegistrer.classList.add("hidden");
+                            return;
                         }
                         // store with inverted keys for quick access
                         let kontakt = student.kontakt;
