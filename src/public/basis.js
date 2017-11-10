@@ -174,7 +174,6 @@ function setup() {
     }
 
     function initApp() {
-        divRegistrer;
         firebase
             .auth()
             .getRedirectResult()
