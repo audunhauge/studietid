@@ -115,7 +115,7 @@ function setup() {
             let ref = database.ref("rooms");
             ref.once("value").then(function (snapshot) {
                 rooms = snapshot.val();
-                let list = Object.keys(rooms)
+                let list = Object.keys(rooms).sort()
                     .map(e => `<option value="${e.toUpperCase()}">`)
                     .join("");
                 divRoom.querySelector("datalist").innerHTML = list;
@@ -171,6 +171,7 @@ function setup() {
         async function visListe(room: string) {
             await getRegistrert(room, datestr);
             divMelding.classList.remove("hidden");
+            divSpinner.classList.add("hidden");
             if (registrerte.length) {
                 let userlist = registrerte.map(stuid => {
                     let stud = { fn: "n", ln: "nn", klasse: "mm", kontakt: "mm" };
@@ -238,7 +239,8 @@ function setup() {
                                 }
                             }
                         }
-                        divMelding.innerHTML = '<div class="spinner"><div></div></div>';
+                        divMelding.innerHTML = '';
+                        divSpinner.classList.remove("hidden");
                         visListe(room);
                     });
                 }

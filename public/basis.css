@@ -81,7 +81,7 @@ div.header {
   background-color: #5C92F5;
   padding-top:1em;
 }
-
+#main div.spinner div,
 div.spinner div {
   padding: 0;
   width: 30px;
