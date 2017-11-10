@@ -134,11 +134,11 @@ function setup() {
             }
         }
 
-        function visListe(room: string) {
+
+        async function getRegistrert(room, datestr) {
             let path = ['roomreg', room, datestr].join("/");
             let ref = database.ref(path);
-            divMelding.classList.remove("hidden");
-            ref.once("value").then(function (snapshot) {
+            await ref.once("value").then(function (snapshot) {
                 let list = snapshot.val();
                 registrerte = [];
                 if (list) {
@@ -152,31 +152,109 @@ function setup() {
                             }
                         }
                     }
-                    let userlist = regs.map(e => {
+                    regs.forEach(e => {
                         let teach = { fn: "n", ln: "nn" };
                         let [stuid, tid] = e;
                         if (teachList[tid]) {
                             teach = teachList[tid];
                         }
-                        let stud = { fn: "n", ln: "nn", klasse:"mm",kontakt:"mm" };
-                        if (studList[stuid]) {
+                        let stud = { fn: "n", ln: "nn", klasse: "mm", kontakt: "mm" };
+                        if (studList[stuid] && !registrerte.includes(stuid)) {
                             stud = studList[stuid];
                             registrerte.push(stuid);     // we need this to check if stud already registered
                         }
-                        return `<div>
+                    });
+                }
+            });
+        }
+
+        async function visListe(room: string) {
+            await getRegistrert(room, datestr);
+            divMelding.classList.remove("hidden");
+            if (registrerte.length) {
+                let userlist = registrerte.map(stuid => {
+                    let stud = { fn: "n", ln: "nn", klasse: "mm", kontakt: "mm" };
+                    if (studList[stuid]) {
+                        stud = studList[stuid];
+                    }
+                    return `<div>
                         <span>${caps(stud.fn)} ${caps(stud.ln)}</span>
                         <span>${stud.klasse.toUpperCase()}</span><span>${stud.kontakt.toUpperCase()}</span>
                         <input type="checkbox" id="s${stuid}">
                         </div>`;
-                    })
-                    divHeader.innerHTML = room.toUpperCase();
-                    divMelding.innerHTML = '<ol class="studlist">' + userlist.join("") + '</ol>';
-                } else {
-                    divMelding.innerHTML =
-                        `<h4>${room}</h4>` +
-                        "ingen registrert"; generateRegistrationCode
+                });
+                divHeader.innerHTML = room.toUpperCase();
+                divMatch.innerHTML = "";
+                divMelding.innerHTML = '<ol class="studlist">' + userlist.join("") + '</ol>'
+                    + '<br><button id="reg" type="button">Slett valgte</button> <button id="merk" type="button">Marker Alle</button>';
+                divMelding.querySelector("#reg").addEventListener("click", slettValgte);
+                divMelding.querySelector("#merk").addEventListener("click", velgAlle);
+
+                function velgAlle() {
+                    divMelding.querySelectorAll("input").forEach(e => e.checked = !e.checked);
                 }
-            });
+
+
+                function slettValgte() {
+                    let toRemove = Array.from(divMelding.querySelectorAll("input:checked")).map(e => e.id.substr(1));
+                    let path = ['roomreg', room, datestr].join("/");
+                    let ref = database.ref(path);
+                    ref.once("value").then(function (snapshot) {
+                        // first we have regkeys, then slots, then studid
+                        // iterate thru this structure picking up info we need to remove a stud
+                        let list = snapshot.val();
+                        for (let regkey in list) {
+                            let slots = list[regkey];
+                            for (let slot in slots) {
+                                let userentry = slots[slot];
+                                for (let uid in userentry) {
+                                    // there is only one key
+                                    // this structure is needed to get database rules
+                                    // to prevent users from writing arbitary uids
+                                    if (toRemove.includes(uid)) {
+                                        console.log("Removing ", uid);
+                                        let student = studList[uid];
+                                        let path = ['roomreg', room, datestr, regkey, slot, uid].join("/");
+                                        let ref = database.ref(path);
+                                        ref.remove();
+
+                                        let kontakt = student.kontakt;
+                                        path = ['kontaktreg', kontakt, datestr, uid].join("/");
+                                        ref = database.ref(path);
+                                        ref.remove().catch(err => {
+                                            console.log(err.message);
+                                        });
+                                        path = ['studreg', uid, datestr].join("/");
+                                        ref = database.ref(path);
+                                        ref.remove().catch(err => {
+                                            console.log(err.message);
+                                        });
+                                        path = ['registrert', datestr, uid, regkey].join("/");
+                                        ref = database.ref(path);
+                                        ref.remove().catch(err => {
+                                            console.log(err.message);
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                        divMelding.innerHTML = '<div class="spinner"><div></div></div>';
+                        visListe(room);
+                    });
+                }
+
+
+            } else {
+                divMelding.innerHTML =
+                    `<h4>${room}</h4>` +
+                    "ingen registrert"; generateRegistrationCode
+            }
+            try {
+                divExpand.removeEventListener("click", expandView);
+            } catch (e) {
+                console.log(e.message);
+                // ignore error - just trying to remove listener that isn't there
+            }
             divExpand.addEventListener("click", expandView);
         }
 
@@ -234,7 +312,7 @@ function setup() {
                             <input type="checkbox" id="nu${s.enr}">
                             </div>`;
                     }).join("") +
-                        '<br><button id="reg" type="button">Registrer</button><button id="merk" type="button">Marker Alle</button>';
+                        '<br><button id="reg" type="button">Registrer</button> <button id="merk" type="button">Marker Alle</button>';
 
                     divMatch.querySelector("#reg").addEventListener("click", registererNye);
                     divMatch.querySelector("#merk").addEventListener("click", velgAlle);
@@ -246,16 +324,16 @@ function setup() {
                         let antall = missing.length;
                         let [kode, key] = await generateRegistrationCode(uid, room, antall, "12:00", 90);
                         console.log(key);
-                        missing.forEach((enr,i) => {
+                        missing.forEach((enr, i) => {
                             // need: room kode datestr enr
                             let student = studList[enr];
-                            let slot = ("000" + (i+1)).substr(-3);
+                            let slot = ("000" + (i + 1)).substr(-3);
                             let path = ['roomreg', room, datestr, kode, slot, enr].join("/");
                             let ref = database.ref(path);
                             ref.set(uid).then(() => {
                             }).catch(err => {
                                 // opptatt
-                            }); 
+                            });
 
                             // store with inverted keys for quick access
                             let kontakt = student.kontakt;
@@ -276,6 +354,9 @@ function setup() {
                             });
                         });
                         // */
+                        divManual.classList.add("hidden");
+                        divMelding.innerHTML = '<div class="spinner"><div></div></div>';
+                        visListe(room);
 
                     }
 
