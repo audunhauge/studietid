@@ -15,12 +15,20 @@ function setup() {
     let divSpinner: any = document.querySelector("div.spinner");
     let divRoom: any = document.querySelector("div.romvalg");
     let divMelding: any = document.querySelector("div.melding");
+    let divBadges: any = document.querySelector("div.badges");
     let divHeader: any = document.querySelector("div.header");
     let divExpand: any = document.querySelector("#expand");
     let divManual: any = document.querySelector("#manual");
     let divCriteria: any = document.querySelector("#criteria");
     let divMatch: any = document.querySelector("#match");
     let divMain: any = document.querySelector("#main");
+
+    divBadges.querySelectorAll("div.badge").forEach(e => e.addEventListener("click", gotoApp));
+
+    function gotoApp(e) {
+        let t = e.target.dataset.url;
+        window.location = t + ".html";
+    }
 
 
 

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="badge.css">
+    <link rel="stylesheet" href="reg.css">
+    <script src="util.js"></script>
+    <script src="lib.js"></script>
+    <script src="kontakt.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Studietid for kontaktlærer</title>
+
+
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script defer src="/__/firebase/4.5.0/firebase-app.js"></script>
+    <script defer src="/__/firebase/4.5.0/firebase-auth.js"></script>
+    <script defer src="/__/firebase/4.5.0/firebase-database.js"></script>
+    <script defer src="/__/firebase/init.js"></script>
+</head>
+
+<body>
+    <div id="box">
+        <div id="outer">
+            <div class="header">
+                <div class="badges">
+                    <div data-url="regliste" class="badge red">Reg</div>
+                    <div data-url="codegen" class="badge blue">Code</div>
+                </div>
+                Kontakt
+            </div>
+            <div id="main" class="reglist">
+
+                <div class="spinner">
+                    <div></div>
+                </div>
+
+                <div id="datelist" class="studlist"></div>
+
+                <div class="melding studlist hidden">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            setup();
+        });
+    </script>
+</body>
+
+</html>

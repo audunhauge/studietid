@@ -4,12 +4,20 @@ function setup() {
     let divSpinner = document.querySelector("div.spinner");
     let divRoom = document.querySelector("div.romvalg");
     let divMelding = document.querySelector("div.melding");
+    let divBadges = document.querySelector("div.badges");
     let divHeader = document.querySelector("div.header");
     let divExpand = document.querySelector("#expand");
     let divManual = document.querySelector("#manual");
     let divCriteria = document.querySelector("#criteria");
     let divMatch = document.querySelector("#match");
     let divMain = document.querySelector("#main");
+
+    divBadges.querySelectorAll("div.badge").forEach(e => e.addEventListener("click", gotoApp));
+
+    function gotoApp(e) {
+        let t = e.target.dataset.url;
+        window.location = t + ".html";
+    }
 
     let database = firebase.database();
     let trueName, rooms, room;

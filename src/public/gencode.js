@@ -12,6 +12,7 @@ function setup() {
     let divSignup: any = document.querySelector("div.signup");
     let divSpinner: any = document.querySelector("div.spinner");
     let divLogin: any = document.querySelector("div.login");
+    let divBadges: any = document.querySelector("div.badges");
     let divRoom: any = document.querySelector("div.romvalg");
     let divAntall: any = document.querySelector("div.antall");
     let divStart: any = document.querySelector("div.start");
@@ -38,6 +39,13 @@ function setup() {
     let validOneTime = false; // used to check one time code
 
     let database = firebase.database();
+
+    divBadges.querySelectorAll("div.badge").forEach(e => e.addEventListener("click", gotoApp));
+
+    function gotoApp(e) {
+        let t = e.target.dataset.url;
+        window.location = t + ".html";
+    }
 
     function toggleSignIn() {
         if (!firebase.auth().currentUser) {
@@ -257,6 +265,8 @@ function setup() {
             }
         }
 
+
+        // TODO this is moved to lib.js
         /**
          * Generer registreringskode for studietid.
          * Først slettes eksisterende koder for denne teach

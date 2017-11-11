@@ -58,3 +58,10 @@ async function generateRegistrationCode(teach,room,count,start,duration) {
     });
     return [nukey,key];
 }
+
+function datestrParse(e) {
+    let year = e.substr(0,4);
+    let month = e.substr(4,2);
+    let day = e.substr(6,2);
+    return {year,month,day};
+}

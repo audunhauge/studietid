@@ -4,7 +4,16 @@
     --bakgrunn3: whitesmoke;
     --bakgrunn4: antiquewhite;
     --formBg: rgba(170, 189, 170, 0.24);
+    --bredde:30em;
+    --minhoyde:30em;
   }
+
+@media only screen and (max-device-width: 500px) {
+      :root {
+        --bredde:16em;
+        --minhoyde:20em;
+      } 
+}  
 
 #box {
   display:flex;
@@ -14,8 +23,8 @@
 
 #main {
     position:relative;
-    width: 30em;
-    min-height: 30em;
+    width: var(--bredde);
+    min-height:var(--minhoyde);
     justify-content: flex-start;
     align-items: flex-start;
 }
@@ -33,6 +42,7 @@
 }
 
 div.header {
+    position: relative;
     height: 2em;
     width: 100%;
     top:0;

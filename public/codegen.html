@@ -3,7 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="basis.css">
+    <link rel="stylesheet" href="badge.css">
+    <link rel="stylesheet" href="reg.css">
+
+
     <script src="util.js"></script>
     <script src="gencode.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,87 +22,99 @@
 </head>
 
 <body>
-    <div id="main">
-
-        <div class="spinner">
-            <div></div>
-        </div>
-
-        <div class="romvalg hidden">
-            <h4></h4>
-            <label>
-                Velg rom:
-                <p>
-                    <input class="rom" list="romliste">
-                    <datalist id="romliste">
-                    </datalist>
-                </p>
-            </label>
-        </div>
-
-        <div class="antall hidden">
-            <h4></h4>
-            <label>
-                Velg antall elever:
-                <p>
-                    <input class="antall" type="number">
-                </p>
-            </label>
-        </div>
-
-        <div class="start hidden">
-            <h4></h4>
-            <label>
-                    Velg start-tid(hh:mm):
-                    <p>
-                        <input class="tid" type="time">
-                    </p>
-                </label>
-            <button >Neste</button>
-        </div>
-
-        <div class="tidsfrist hidden">
-            <h4></h4>
-            <label>
-                Velg varighet(minutter):
-                <p>
-                    <input class="tid" type="number">
-                </p>
-            </label>
-        </div>
-
-        <div class="melding hidden">
-            <h4></h4>
-            <p>
-                <label></label>
-            </p>
-        </div>
-
-
-        <div class="login hidden">
-            <button disabled class="signin">Sign in with Google</button>
-        </div>
-
-        <div class="signup hidden">
-            <h4>Oppgi engangskode</h4>
-            <div title="Dette skjer bare første gang. Deretter trenger du bare autentisering fra google eller facebook (på mobilen din vil du vanligvis være autentisert fra før).">
-                For å identifisere deg må du oppgi en enganskode som du får av kontoret.
+    <div id="box">
+        <div id="outer">
+            <div class="header">
+                <div class="badges">
+                    <div data-url="regliste" class="badge red">Reg</div>
+                    <div data-url="kontakt" class="badge green">Kont</div>
+                </div>
+                Kodegenerator
             </div>
-            <label>
-                Skriv inn enganskoden:
-                <br> (12 tegn)
-                <p>
-                    <input class="kode" type="text">
-                    <br><span title="Elever ser ditt bilde når de bruker din kode">Vis profilbildet til elever.</span>
-                    <input class="profil" type="checkbox">
-                </p>
-            </label>
-            <button disabled class="signup">Bruk engangskoden</button>
+            <div id="main">
+
+
+
+                <div class="spinner">
+                    <div></div>
+                </div>
+
+                <div class="romvalg hidden">
+                    <h4></h4>
+                    <label>
+                        Velg rom:
+                        <p>
+                            <input class="rom" list="romliste">
+                            <datalist id="romliste">
+                            </datalist>
+                        </p>
+                    </label>
+                </div>
+
+                <div class="antall hidden">
+                    <h4></h4>
+                    <label>
+                        Velg antall elever:
+                        <p>
+                            <input class="antall" type="number">
+                        </p>
+                    </label>
+                </div>
+
+                <div class="start hidden">
+                    <h4></h4>
+                    <label>
+                        Velg start-tid(hh:mm):
+                        <p>
+                            <input class="tid" type="time">
+                        </p>
+                    </label>
+                    <button>Neste</button>
+                </div>
+
+                <div class="tidsfrist hidden">
+                    <h4></h4>
+                    <label>
+                        Velg varighet(minutter):
+                        <p>
+                            <input class="tid" type="number">
+                        </p>
+                    </label>
+                </div>
+
+                <div class="melding hidden">
+                    <h4></h4>
+                    <p>
+                        <label></label>
+                    </p>
+                </div>
+
+
+                <div class="login hidden">
+                    <button disabled class="signin">Sign in with Google</button>
+                </div>
+
+                <div class="signup hidden">
+                    <h4>Oppgi engangskode</h4>
+                    <div title="Dette skjer bare første gang. Deretter trenger du bare autentisering fra google eller facebook (på mobilen din vil du vanligvis være autentisert fra før).">
+                        For å identifisere deg må du oppgi en enganskode som du får av kontoret.
+                    </div>
+                    <label>
+                        Skriv inn enganskoden:
+                        <br> (12 tegn)
+                        <p>
+                            <input class="kode" type="text">
+                            <br>
+                            <span title="Elever ser ditt bilde når de bruker din kode">Vis profilbildet til elever.</span>
+                            <input class="profil" type="checkbox">
+                        </p>
+                    </label>
+                    <button disabled class="signup">Bruk engangskoden</button>
+                </div>
+
+            </div>
         </div>
 
-        <div class="header">
-            Studietid
-        </div>
 
     </div>
 

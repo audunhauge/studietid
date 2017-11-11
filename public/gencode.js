@@ -2,6 +2,7 @@ function setup() {
     let divSignup = document.querySelector("div.signup");
     let divSpinner = document.querySelector("div.spinner");
     let divLogin = document.querySelector("div.login");
+    let divBadges = document.querySelector("div.badges");
     let divRoom = document.querySelector("div.romvalg");
     let divAntall = document.querySelector("div.antall");
     let divStart = document.querySelector("div.start");
@@ -28,6 +29,13 @@ function setup() {
     let validOneTime = false; // used to check one time code
 
     let database = firebase.database();
+
+    divBadges.querySelectorAll("div.badge").forEach(e => e.addEventListener("click", gotoApp));
+
+    function gotoApp(e) {
+        let t = e.target.dataset.url;
+        window.location = t + ".html";
+    }
 
     function toggleSignIn() {
         if (!firebase.auth().currentUser) {
@@ -135,7 +143,7 @@ function setup() {
                     let ref = database.ref("rooms");
                     ref.once("value").then(function (snapshot) {
                         rooms = snapshot.val();
-                        let list = Object.keys(rooms).map(e => `<option value="${ e.toUpperCase() }">`).join("");
+                        let list = Object.keys(rooms).map(e => `<option value="${e.toUpperCase()}">`).join("");
                         divRoom.querySelector("datalist").innerHTML = list;
                     });
                     divRoom.querySelector("input").addEventListener("keyup", valgtRom);
@@ -160,7 +168,7 @@ function setup() {
             let ref = database.ref("rooms");
             ref.once("value").then(function (snapshot) {
                 rooms = snapshot.val();
-                let list = Object.keys(rooms).map(e => `<option value="${ e.toUpperCase() }">`).join("");
+                let list = Object.keys(rooms).map(e => `<option value="${e.toUpperCase()}">`).join("");
                 divRoom.querySelector("datalist").innerHTML = list;
             });
             divRoom.querySelector("input").addEventListener("keyup", valgtRom);
@@ -234,6 +242,7 @@ function setup() {
             }
         }
 
+        // TODO this is moved to lib.js
         /**
          * Generer registreringskode for studietid.
          * Først slettes eksisterende koder for denne teach
@@ -278,9 +287,9 @@ function setup() {
                 let key = { count, room, duration, start, teach, timestamp };
                 ref.set(key);
                 divMelding.classList.remove("hidden");
-                divMelding.querySelector("label").innerHTML = `<h4>${ nukey }</h4>
-                   Nøkkel for ${ room }<br>Gjelder for ${ count } elever<br>
-                   start:${ start } varighet:${ duration }`;
+                divMelding.querySelector("label").innerHTML = `<h4>${nukey}</h4>
+                   Nøkkel for ${room}<br>Gjelder for ${count} elever<br>
+                   start:${start} varighet:${duration}`;
             });
         }
 
