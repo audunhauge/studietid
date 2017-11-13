@@ -2,6 +2,7 @@
 
 declare function caps(s: string): string;
 declare function datestrParse(s: string): Object ;
+declare function niceName(s: Object): string;
 
 declare function generateRegistrationCode(teach: string, room: string,
     count: number, start: string, duration: number): any;
@@ -197,10 +198,8 @@ function setup() {
                     if (studList[stuid]) {
                         stud = studList[stuid];
                     }
-                    return `<div>
-                        <span>${caps(stud.fn)} ${caps(stud.ln)}</span>
-                        <span>${stud.klasse.toUpperCase()}</span><span>${stud.kontakt.toUpperCase()}</span>
-                        </div>`;
+                    return '<div>'+ niceName(stud) +
+                        `<span>${stud.klasse.toUpperCase()}</span><span>${stud.kontakt.toUpperCase()}</span></div>`;
                 });
                 divMelding.innerHTML = `<h4>Uregistrert ${day} ${month} ${year}</h4><ol class="studlist">` + userlist.join("") + '</ol>';
             } else {

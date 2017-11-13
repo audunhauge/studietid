@@ -1,6 +1,8 @@
 // @flow
 
 declare function caps(s: string): string;
+declare function datestrParse(s: string): Object ;
+declare function niceName(s: Object): string;
 
 declare function generateRegistrationCode(teach: string, room: string,
     count: number, start: string, duration: number): any;
@@ -316,9 +318,8 @@ function setup() {
                         }
                     });
                     divMatch.innerHTML = afterLast.map((s) => {
-                        return `<div>
-                            <span>${caps(s.fn)} ${caps(s.ln)}</span>
-                            <span>${s.klasse.toUpperCase()}</span><span>${s.kontakt.toUpperCase()}</span>
+                        return '<div>'+ niceName(s) +
+                            `<span>${s.klasse.toUpperCase()}</span><span>${s.kontakt.toUpperCase()}</span>
                             <input type="checkbox" id="nu${s.enr}">
                             </div>`;
                     }).join("") +

@@ -1,3 +1,5 @@
+
+
 function setup() {
     let divSpinner = document.querySelector("div.spinner");
     let divDatelist = document.querySelector("#datelist");
@@ -117,9 +119,9 @@ function setup() {
                                     return kontakter["thto"].includes(+uid);
                                 });
                                 let { year, month, day } = datestrParse(e);
-                                return `<div id="date${e}">
-                               <span>${day} ${month} ${year}</span><span>${number.length}</span>
-                               <span>${mine.length}</span>
+                                return `<div id="date${ e }">
+                               <span>${ day } ${ month } ${ year }</span><span>${ number.length }</span>
+                               <span>${ mine.length }</span>
                                </div>`;
                             });
                             divDatelist.innerHTML = showList.join('');
@@ -168,14 +170,11 @@ function setup() {
                     if (studList[stuid]) {
                         stud = studList[stuid];
                     }
-                    return `<div>
-                        <span>${caps(stud.fn)} ${caps(stud.ln)}</span>
-                        <span>${stud.klasse.toUpperCase()}</span><span>${stud.kontakt.toUpperCase()}</span>
-                        </div>`;
+                    return '<div>' + niceName(stud) + `<span>${ stud.klasse.toUpperCase() }</span><span>${ stud.kontakt.toUpperCase() }</span></div>`;
                 });
-                divMelding.innerHTML = `<h4>Uregistrert ${day} ${month} ${year}</h4><ol class="studlist">` + userlist.join("") + '</ol>';
+                divMelding.innerHTML = `<h4>Uregistrert ${ day } ${ month } ${ year }</h4><ol class="studlist">` + userlist.join("") + '</ol>';
             } else {
-                divMelding.innerHTML = none ? `<h4>Ingen registrert ${day} ${month} ${year}</h4>` : `<h4>Alle registrert ${day} ${month} ${year}</h4>`;
+                divMelding.innerHTML = none ? `<h4>Ingen registrert ${ day } ${ month } ${ year }</h4>` : `<h4>Alle registrert ${ day } ${ month } ${ year }</h4>`;
             }
         }
 

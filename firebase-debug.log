@@ -34,3 +34,39 @@
 [info] i  hosting: Serving hosting files from: public
 [info] ✔  hosting: Local server: http://localhost:5000
 
+[debug] [2017-11-13T09:27:02.365Z] ----------------------------------------------------------------------
+[debug] [2017-11-13T09:27:02.366Z] Command:       /usr/local/bin/node /usr/local/bin/firebase serve
+[debug] [2017-11-13T09:27:02.366Z] CLI Version:   3.14.0
+[debug] [2017-11-13T09:27:02.366Z] Platform:      linux
+[debug] [2017-11-13T09:27:02.366Z] Node Version:  v8.0.0
+[debug] [2017-11-13T09:27:02.366Z] Time:          Mon Nov 13 2017 10:27:02 GMT+0100 (CET)
+[debug] [2017-11-13T09:27:02.366Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-11-13T09:27:02.375Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-11-13T09:27:02.375Z] > authorizing via signed-in user
+[debug] [2017-11-13T09:27:02.376Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2017-11-13T09:27:02.376Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token { refresh_token: '1/EBJix_QRcwz89Hf09ejUteHLi4uZLGMORjWfO-6fuyk',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Mon Nov 13 2017 10:27:02 GMT+0100 (CET)
+[debug] [2017-11-13T09:27:02.551Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-13T09:27:02.552Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/studietid-2e729  
+ Mon Nov 13 2017 10:27:02 GMT+0100 (CET)
+[debug] [2017-11-13T09:27:03.299Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-13T09:27:03.300Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/studietid-2e729/tokens  
+ Mon Nov 13 2017 10:27:03 GMT+0100 (CET)
+[debug] [2017-11-13T09:27:03.997Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/home/audun/studietid'...
+[info] 
+[debug] [2017-11-13T09:27:04.003Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/studietid-2e729  
+ Mon Nov 13 2017 10:27:04 GMT+0100 (CET)
+[debug] [2017-11-13T09:27:04.944Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-13T09:27:04.944Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/361255069534/clients/_:getWebAppConfig  
+ Mon Nov 13 2017 10:27:04 GMT+0100 (CET)
+[debug] [2017-11-13T09:27:05.497Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: public
+[info] ✔  hosting: Local server: http://localhost:5000
+

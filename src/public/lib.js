@@ -65,3 +65,7 @@ function datestrParse(e) {
     let day = e.substr(6,2);
     return {year,month,day};
 }
+
+function niceName(stud) {
+    return `<span class="first">${caps(stud.fn)}</span><span class="last">${caps(stud.ln)}</span>`;
+}

@@ -6,11 +6,16 @@
     --formBg: rgba(170, 189, 170, 0.24);
     --bredde:30em;
     --minhoyde:30em;
+    --name1:18vw;
+    --name2:20vw;
+    --info:10vw;
   }
 
 @media only screen and (max-device-width: 500px) {
       :root {
-        --bredde:16em;
+        --name1:16vw;
+        --name2:12vw;
+        --info:15vw;
         --minhoyde:20em;
       } 
 }  
@@ -23,15 +28,16 @@
 
 #main {
     position:relative;
-    width: var(--bredde);
+    max-width: var(--bredde);
+    width: 88vw;
     min-height:var(--minhoyde);
     justify-content: flex-start;
     align-items: flex-start;
+    margin-top:0.2em;
 }
 
 #main, #manual {
   background-color: var(--bakgrunn2);
-  margin: 0.2em;
   border: solid 1px gray;
   box-shadow: 2px 2px 2px gray;
   padding: 1em;
@@ -53,6 +59,18 @@ div.header {
     background-color: #5C92F5;
     padding-top:1em;
   }
+
+div.header.reg {
+  border-bottom: solid  rgba(209, 17, 17, 0.815) 8px;
+}
+div.header.kont {
+  border-bottom: solid  rgba(17, 209, 17, 0.815) 8px;
+}
+div.header.code {
+  border-bottom: solid  rgba(17, 17, 209, 0.815) 8px;
+}
+
+
 
 
 #manual {
@@ -134,7 +152,8 @@ div.studlist {
 }
 
 div.studlist div {
-  width: 25em;
+  width: 80vw;
+  max-width: 26em;
   display:flex;
   justify-content: space-between;
 }
@@ -148,15 +167,26 @@ div.studlist div:before {
   color:blue;
 }
 
-
+div.studlist div span.first,
+div.studlist div span.last {
+  white-space: nowrap;
+  display: inline-block;
+  width:var(--name1);   /* 10vw default */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+div.studlist div span.first {
+  width:var(--name2);  /* if mobile then 10 -> 3 */
+}
+/*
 div.studlist div span:first-child {
     display: inline-block;
     width: 16em;
     text-overflow: ellipsis;
-}
+}*/
 
-div.studlist div span:nth-child(n+2) {
+div.studlist div span:nth-child(n+3) {
     display: inline-block;
-    width: 4em;
+    width: var(--info);
     color:blue;
 }
