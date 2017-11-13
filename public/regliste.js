@@ -161,13 +161,11 @@ function setup() {
                     if (studList[stuid]) {
                         stud = studList[stuid];
                     }
-                    return `<div>
-                        <span>${ caps(stud.fn) } ${ caps(stud.ln) }</span>
-                        <span>${ stud.klasse.toUpperCase() }</span><span>${ stud.kontakt.toUpperCase() }</span>
+                    return '<div>' + niceName(stud) + `<span>${ stud.klasse.toUpperCase() }</span><span>${ stud.kontakt.toUpperCase() }</span>
                         <input type="checkbox" id="s${ stuid }">
                         </div>`;
                 });
-                divHeader.innerHTML = room.toUpperCase();
+                divHeader.querySelector("span").innerHTML = room.toUpperCase();
                 divMatch.innerHTML = "";
                 divMelding.innerHTML = '<ol class="studlist">' + userlist.join("") + '</ol>' + '<br><button id="reg" type="button">Slett valgte</button> <button id="merk" type="button">Marker Alle</button>';
                 divMelding.querySelector("#reg").addEventListener("click", slettValgte);
