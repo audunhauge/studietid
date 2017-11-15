@@ -1,7 +1,7 @@
 // @flow
 
 declare function caps(s: string): string;
-declare function datestrParse(s: string): Object ;
+declare function datestrParse(s: string): Object;
 declare function niceName(s: Object): string;
 
 declare function generateRegistrationCode(teach: string, room: string,
@@ -23,6 +23,7 @@ function setup() {
     let divCriteria: any = document.querySelector("#criteria");
     let divMatch: any = document.querySelector("#match");
     let divMain: any = document.querySelector("#main");
+    let divBox: any = document.querySelector("#box");
     let divBadges: any = document.querySelector("div.badges");
 
 
@@ -44,8 +45,8 @@ function setup() {
     divBadges.querySelectorAll("div.badge").forEach(e => e.addEventListener("click", gotoApp));
 
     function gotoApp(e) {
-       let t = e.target.dataset.url;
-       window.location = t + ".html";
+        let t = e.target.dataset.url;
+        window.location = t + ".html";
     }
 
 
@@ -135,35 +136,35 @@ function setup() {
                     ref.once("value").then(function (snapshot) {
                         let datelist = snapshot.val();
                         if (datelist) {
-                           // show these dates to user
-                           // click to show how many of own studs registered on selected date
-                           let dateStrings = Object.keys(datelist).sort();
-                           let showList = dateStrings.map(e => {
-                               let number = Object.keys(datelist[e]);
-                               let mine = number.filter(uid => {
-                                   return kontakter["thto"].includes(+uid);
-                               });
-                               let {year,month,day} = datestrParse(e);
-                               return `<div id="date${e}">
+                            // show these dates to user
+                            // click to show how many of own studs registered on selected date
+                            let dateStrings = Object.keys(datelist).sort();
+                            let showList = dateStrings.map(e => {
+                                let number = Object.keys(datelist[e]);
+                                let mine = number.filter(uid => {
+                                    return kontakter[teach] && kontakter[teach].includes(+uid);
+                                });
+                                let { year, month, day } = datestrParse(e);
+                                return `<div id="date${e}">
                                <span>${day} ${month} ${year}</span><span>${number.length}</span>
                                <span>${mine.length}</span>
                                </div>`;
-                           })
-                           divDatelist.innerHTML = showList.join('');
-                           divDatelist.addEventListener("click", showThisList);
+                            })
+                            divDatelist.innerHTML = showList.join('');
+                            divDatelist.addEventListener("click", showThisList);
 
-                           function showThisList(e) {
-                              let t = e.target;
-                              if (!t.id ) {
-                                  t = t.parentNode;
-                              }
-                              if (t.id && t.id.substr(0,4) === 'date') {
-                                visListe(t.id.substr(4));
-                              }
-                           }
-                           
+                            function showThisList(e) {
+                                let t = e.target;
+                                if (!t.id) {
+                                    t = t.parentNode;
+                                }
+                                if (t.id && t.id.substr(0, 4) === 'date') {
+                                    visListe(t.id.substr(4), teach);
+                                }
+                            }
+
                         } else {
-                            divDatelist.innerHTML = '<h4>Systemet har ingen registreringer</h4>'; 
+                            divDatelist.innerHTML = '<h4>Systemet har ingen registreringer</h4>';
                         }
                     });
                 }
@@ -172,8 +173,8 @@ function setup() {
 
 
 
-        async function getRegistrert(datestr) {
-            let path = ['kontaktreg', "thto", datestr].join("/");
+        async function getRegistrert(datestr, teach) {
+            let path = ['kontaktreg', teach, datestr].join("/");
             let ref = database.ref(path);
             let missing = [];
             let none = true;
@@ -185,26 +186,26 @@ function setup() {
                     missing = expected.filter(e => !list[e]);
                 }
             });
-            return [missing,none];
+            return [missing, none];
         }
 
-        async function visListe(datestr) {
-            let {year,month,day} = datestrParse(datestr);
+        async function visListe(datestr, teach) {
+            let { year, month, day } = datestrParse(datestr);
             divMelding.classList.remove("hidden");
-            let [missing,none] = await getRegistrert(datestr);
+            let [missing, none] = await getRegistrert(datestr, teach);
             if (missing.length) {
                 let userlist = missing.map(stuid => {
                     let stud = { fn: "n", ln: "nn", klasse: "mm", kontakt: "mm" };
                     if (studList[stuid]) {
                         stud = studList[stuid];
                     }
-                    return '<div>'+ niceName(stud) +
+                    return '<div>' + niceName(stud) +
                         `<span>${stud.klasse.toUpperCase()}</span><span>${stud.kontakt.toUpperCase()}</span></div>`;
                 });
                 divMelding.innerHTML = `<h4>Uregistrert ${day} ${month} ${year}</h4><ol class="studlist">` + userlist.join("") + '</ol>';
             } else {
-                divMelding.innerHTML = none ? `<h4>Ingen registrert ${day} ${month} ${year}</h4>` 
-                : `<h4>Alle registrert ${day} ${month} ${year}</h4>`;
+                divMelding.innerHTML = none ? `<h4>Ingen registrert ${day} ${month} ${year}</h4>`
+                    : `<h4>Alle registrert ${day} ${month} ${year}</h4>`;
             }
 
         }

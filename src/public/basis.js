@@ -11,6 +11,7 @@ declare var firebase: {
 };
 
 function setup() {
+    let divMain:any = document.querySelector("#main");
     let divSignup: any = document.querySelector("div.signup");
     let divRegistrer: any = document.querySelector("div.registrer");
     let divSpinner: any = document.querySelector("div.spinner");
@@ -38,6 +39,7 @@ function setup() {
 
     let now = new Date();
     let datestr = now.toJSON().substr(0, 10).replace(/-/g, '');
+   
 
     /*******************
      * TESTING LAYOUT CSS
@@ -48,10 +50,8 @@ function setup() {
     function changeClass(e: KeyboardEvent) {
         let target: any = e.target;
         let klass = target.dataset.t;
-        document
-            .getElementById("main")
-            .classList.remove(..."aa,bb,cc,dd".split(","));
-        document.getElementById("main").classList.add(klass);
+        divMain.classList.remove(..."aa,bb,cc,dd".split(","));
+        divMain.classList.add(klass);
     }
 
     /**

@@ -1,6 +1,7 @@
 
 
 function setup() {
+    let divMain = document.querySelector("#main");
     let divSignup = document.querySelector("div.signup");
     let divRegistrer = document.querySelector("div.registrer");
     let divSpinner = document.querySelector("div.spinner");
@@ -38,8 +39,8 @@ function setup() {
     function changeClass(e) {
         let target = e.target;
         let klass = target.dataset.t;
-        document.getElementById("main").classList.remove(..."aa,bb,cc,dd".split(","));
-        document.getElementById("main").classList.add(klass);
+        divMain.classList.remove(..."aa,bb,cc,dd".split(","));
+        divMain.classList.add(klass);
     }
 
     /**

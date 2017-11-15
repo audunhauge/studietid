@@ -10,6 +10,7 @@ function setup() {
     let divCriteria = document.querySelector("#criteria");
     let divMatch = document.querySelector("#match");
     let divMain = document.querySelector("#main");
+    let divBox = document.querySelector("#box");
     let divBadges = document.querySelector("div.badges");
 
     let database = firebase.database();
@@ -116,7 +117,7 @@ function setup() {
                             let showList = dateStrings.map(e => {
                                 let number = Object.keys(datelist[e]);
                                 let mine = number.filter(uid => {
-                                    return kontakter["thto"].includes(+uid);
+                                    return kontakter[teach] && kontakter[teach].includes(+uid);
                                 });
                                 let { year, month, day } = datestrParse(e);
                                 return `<div id="date${ e }">
@@ -133,7 +134,7 @@ function setup() {
                                     t = t.parentNode;
                                 }
                                 if (t.id && t.id.substr(0, 4) === 'date') {
-                                    visListe(t.id.substr(4));
+                                    visListe(t.id.substr(4), teach);
                                 }
                             }
                         } else {
@@ -144,8 +145,8 @@ function setup() {
             });
         }
 
-        async function getRegistrert(datestr) {
-            let path = ['kontaktreg', "thto", datestr].join("/");
+        async function getRegistrert(datestr, teach) {
+            let path = ['kontaktreg', teach, datestr].join("/");
             let ref = database.ref(path);
             let missing = [];
             let none = true;
@@ -160,10 +161,10 @@ function setup() {
             return [missing, none];
         }
 
-        async function visListe(datestr) {
+        async function visListe(datestr, teach) {
             let { year, month, day } = datestrParse(datestr);
             divMelding.classList.remove("hidden");
-            let [missing, none] = await getRegistrert(datestr);
+            let [missing, none] = await getRegistrert(datestr, teach);
             if (missing.length) {
                 let userlist = missing.map(stuid => {
                     let stud = { fn: "n", ln: "nn", klasse: "mm", kontakt: "mm" };

@@ -1,17 +1,17 @@
 :root {
-   --badges:inline-flex;
+   --badgesize:48px;
   }
 
 @media only screen and (max-device-width: 500px) {
       :root {
-        --badges:none;
+        --badgesize:36px;
       } 
 }  
 
 
 div.badges {
     position: absolute;
-    display: var(--badges);
+    display: inline-flex;
     left:10px;
     top:10px;
 }
@@ -23,8 +23,8 @@ div.badge {
     font-size: 0.6em;
     padding-top:4px;
     display: inline-block;
-    width: 48px;
-    height: 48px;
+    width: var(--badgesize);
+    height: var(--badgesize);
     border-radius: 50%;
     box-shadow: 1px 1px 2px black;
 }

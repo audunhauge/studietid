@@ -1,10 +1,18 @@
 :root {
     --bakgrunn1: white;
-    --bakgrunn2: cornsilk;
+    --bakgrunn2: #e4ecef;
     --bakgrunn3: whitesmoke;
     --bakgrunn4: antiquewhite;
     --formBg: rgba(170, 189, 170, 0.24);
+    --appw:16em;
   }
+
+  @media only screen and (max-device-width: 500px) {
+    :root {
+      --appw:85vw;
+    } 
+}  
+
 
 #box {
   display:flex;
@@ -13,8 +21,9 @@
 
 
 #main {
+    background-size: cover;
     position:relative;
-    width: 16em;
+    width: var(--appw);
     height: 20em;
     position: relative;  
     overflow: hidden;
