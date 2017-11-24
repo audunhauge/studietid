@@ -11,6 +11,10 @@
 // enr   klasse   navn          kontakt
 // 123   1STA     olsen, ole    huro
 
+const STARTVERDI = 1234324;
+// Denne må endres for hver gang det skal lages et nytt sett med koder.
+// Den må ha samme verdi når elever.json,otpelever.jsojn og passordliste.json lages
+// slik at det blir det samme passordet for hver elev i de tre filene.
 
 const excelToJson = require('convert-excel-to-json');
 const fs = require('fs');
@@ -61,7 +65,7 @@ function xl2j(dir, file) {
         let entries = result[Object.keys(result)[0]];
         // bare ark1 inneholder data
 
-        let i = 1234324;
+        let i = STARTVERDI;
         // samme startverdi gir samme sekvens med otp
         // nødvendig da vi skriver ut to forskjellige filer
         // endre denne verdien for å få andre sekvenser

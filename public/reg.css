@@ -25,6 +25,15 @@
   flex-wrap: wrap;
 }
 
+#heading:before {
+  content: "";
+}
+
+#heading span {
+  font-size: 1.2em;
+  color: green;
+}
+
 
 #main {
     position:relative;

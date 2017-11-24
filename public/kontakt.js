@@ -125,6 +125,9 @@ function setup() {
                                <span>${ mine.length }</span>
                                </div>`;
                             });
+                            showList.unshift(`<div id="heading">
+                              <span>Dato</span><span>Totalt</span><span>Dine</span>
+                            </div>`);
                             divDatelist.innerHTML = showList.join('');
                             divDatelist.addEventListener("click", showThisList);
 
@@ -154,7 +157,7 @@ function setup() {
                 let list = snapshot.val();
                 if (list) {
                     none = false;
-                    let expected = kontakter["thto"];
+                    let expected = kontakter[teach];
                     missing = expected.filter(e => !list[e]);
                 }
             });
