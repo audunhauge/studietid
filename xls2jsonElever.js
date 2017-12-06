@@ -1,3 +1,4 @@
+// @flow
 // leser inn en mappe med xlsx filer med elever og lager en json fil som kan lastes inn i firebase
 // i eksemplene under har mappen navnet elever.
 // BRUK:  node xls2jsonElever.js elever > elever/elever.json    // lager elevregister - import stud

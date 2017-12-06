@@ -14,6 +14,7 @@ function setup() {
     let btnSignup = divSignup.querySelector("button");
     let lblSignup = divSignup.querySelector("label");
     let inpOnetime = divSignup.querySelector("input");
+    let btnRegistrer = divRegistrer.querySelector("button");
 
     let displayName; // name as known to id-provider
     let userid; // google id (or facebook)
@@ -26,37 +27,28 @@ function setup() {
     let database = firebase.database();
 
     inpKode.addEventListener("keyup", registrer);
+    btnRegistrer.addEventListener("click", registrerMeg);
 
     let now = new Date();
     let datestr = now.toJSON().substr(0, 10).replace(/-/g, '');
 
-    /*******************
-     * TESTING LAYOUT CSS
-     */
-    //$FlowFixMe flow can't decide
-    document.getElementById("test").addEventListener("click", changeClass);
-
-    function changeClass(e) {
-        let target = e.target;
-        let klass = target.dataset.t;
-        divMain.classList.remove(..."aa,bb,cc,dd".split(","));
-        divMain.classList.add(klass);
+    function registrerMeg() {
+        registrer({ keyCode: 13 });
     }
-
-    /**
-     * END TESTING
-     */
 
     function registrer(e) {
         lblKode.dataset.msg = "";
         if (e.keyCode === 13) {
             let kode = inpKode.value;
+            if (kode === "") return;
+            inpKode.classList.add("wait");
             let now = new Date();
             let h = now.getHours();
             let m = now.getMinutes();
             let minutes = h * 60 + m;
             let ref = database.ref("regkeys/" + kode);
             ref.once("value").then(function (snapshot) {
+                inpKode.classList.remove("wait");
                 let regkey = snapshot.val();
                 if (regkey && regkey.count && regkey.start && regkey.room) {
                     // found a key

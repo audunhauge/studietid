@@ -1,0 +1,17 @@
+@startuml
+
+title "Studietid - Sequence Diagram"
+
+actor Elev
+boundary "Web GUI" as GUI
+control "Studietid" as SC
+entity RegKode
+database RegKoder
+
+Elev -> GUI : Til grensesnitt
+GUI -> SC : Til kontroll
+SC -> RegKode : Til RegKode
+Elev <- GUI : Bekreftelse
+RegKode -> RegKoder : Til database
+
+@enduml

@@ -126,6 +126,18 @@ div label {
 }
 
 
+#main div input.wait {
+  background-color: white;
+  animation: cycle 2s alternate infinite;
+}
+
+@keyframes cycle {
+  0% { background-color: rgba(190, 101, 101, 0.596); }
+  100% { background-color: green; }
+}
+
+
+
 div.registrer label input {
   color:green;
   font-size: 1.3em;

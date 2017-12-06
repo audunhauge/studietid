@@ -1,0 +1,9 @@
+@startgantt
+Project starts the 20th of september 2017
+[Prototype design] lasts 7 days and is colored in Lavender/LightBlue
+[Test prototype] lasts 7 days and is colored in Coral/Green and starts 3 days after [Prototype design]'s end
+[Lag database] lasts 5 days and ends at [Prototype design]'s end
+[Lag skjema] lasts 17 days and starts at [Lag database]'s end
+[Lagre data] is colored in Coral/Green
+[Lagre data] starts 1 day before [Test prototype]'s start and ends at [Test prototype]'s end
+@endgantt
